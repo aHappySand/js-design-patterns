@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title> 单例模式 </title>
+        <meta name="generator" content="editplus">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <style type="text/css">
+
+        </style>
+
+        <script type="text/javascript">
+            //1. 独立的对象
+            //2.通过门铃通信
+            var xw = (function(argument){
+                var men;
+                var info = {
+                    sendMessage:function(message){
+                        
+                    }
+                };
+
+                return info;
+            })();
+
+            var xl = {
+                callXW: function(msg){
+                    xw.sendMessage();
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+  
+    </body>
+</html>
