@@ -1,38 +1,41 @@
-var Interface = function(name, methods){
-	if(arguments.length!=2){
-		throw new Error("Interface constructor called with " + arguments.length + " arguments, but expected exactly 2.");
+var Interface = function(objName, methods){
+	if(arguments.length != 2){
+		throw new Error("Interface arguments must be 2.but " 
+			+ arguments.length);
 	}
 
-	this.name = name;
+	this.name = objName;
 	this.methods = [];
-	for (var i =0, len = methods.length; i < len; i++) {
-		if (typeof methods[i] !== 'string'){
-			throw new Error("Interface constructor expects method names to be passed in as a string");
+	for(var i = 0, len = methods.length; i < len; i++){
+		if(typeof methods[i] !== 'string'){
+			throw new Error("Interface constructor expects method must to be passed in as a string."
+				+ "but " + (typeof methods[i]);
 		}
 		this.methods.push(methods[i]);
 	}
 };
 
-//Static class method
+// static class method
 Interface.ensureImplements = function(object){
-	if(arguments.length < 2){
-		throw new Error("Function Interface.ensureImplements cassed with " + 
-			arguments.length + " arguments, but expected at least 2.");
+	if (arguments.length < 2){
+		throw new Error("Function Interface.ensureImplements called with " 
+			+ arguments.length + "arguments, but expected at least 2.");
 	}
 
-	for (var i = 1, len = arguments.length; i < len; i++) {
+	for(var i =1; len = arguments.length; i < len; i++){
 		var interface = arguments[i];
-		if(interface.constructor !== Interface){
-			throw new Error("Function Interface.ensureImplements expects arguments"
-			 + " two and above to be instances of Interface.");
+		if(interface.constructor != 'Interface'){
+			throw new Error("Function Interface.ensureImplements expects arguments two and "
+				+ "above to be instance of Interface. but " 
+				+ interface.constructor + "gived");
 		}
 
-		for (var j = 0, methodsLen = interface.methods.length; j < methodsLen; j++) {
+		for (var j = 0; methodsLen = interface.methods.length; j < methodsLen; j++){
 			var method = interface.methods[j];
 			if(!object[method] || typeof object[method] !== 'function'){
-				throw new Error("Function Interface.ensureImplements: object"
+				throw new Error("Function Interface.ensureImplements: object "
 					+ "dose not implement the " + interface.name 
-					+ " interface. Method + " + method + " was not found");
+					+ " interface.method " + method + " was not found");
 			}
 		}
 	}

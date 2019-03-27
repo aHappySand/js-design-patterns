@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+    <head>
+        <title>Untitled</title>
+    </head>
+
+    <script type="text/javascript">
+        function foo(){
+        	var a = 10;
+
+        	function bar(){
+        		a *= 2;
+        	}
+
+        	bar();
+        	return a;
+        }
+
+        alert(foo());
+
+
+        /**
+         * 闭包
+         * 在foo2返回之后，作用域被保存下来了，
+         * 但是只有返回的函数才能访问这个作用域
+         *
+         */
+        function foo2(){
+        	var a = 10;
+        	function bar(){
+        		a *= 2;
+        		return a;
+        	}
+        	return bar;
+        }
+
+        var baz = foo2();
+        alert(baz()); // 20
+        alert(baz()); // 40
+        alert(baz()); // 80
+
+        var bz2 = foo2();
+        alert(bz2()); // 20
+    </script>
+    <body>
+
+        Hello World!
+
+    </body>
+</html>
