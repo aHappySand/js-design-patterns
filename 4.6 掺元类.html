@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>掺元类</title>
+
+    <script type="text/javascript" src="4.6 掺元类.js"></script>
+    <!-- <script type="text/javascript" src="4.6 掺元类2.js"></script> -->
+
+    <script type="text/javascript">
+
+         var author = new Author('Rose', ['javascript design pattern']);
+         alert(author.serialize());
+
+
+        // var author = clone(Author);
+        // alert(author.serialize())
+    </script>
+</head>
+    <body>
+        <div>
+            <h3>掺元类:</h3>
+            <p>
+                有一种重用代码的方法不需要用到严格的继承。如果想把一个函数用到多个类中，可以通过  扩充（augmentation）的方式让这些类共享该函数。其实际做法大体为：先创建一个包含各种  通用方法的类，然后再用它扩充其他类。这种包含通用方法的类被称为掺元类（mixin clas）。  它们通常不会被实例化或直接调用。其存在的目的只是向其他类提供自己的方法。
+            </p>
+        </div>
+    </body>
+</html>

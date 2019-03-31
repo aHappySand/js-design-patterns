@@ -9,6 +9,8 @@ function extend(subClass, superClass){
 }
 
 
+
+
 function Person(name){
     this.name = name;
 }
@@ -24,6 +26,8 @@ function Author(name, books){
 }
 extend(Author, Person);
 Author.prototype.getBooks = function(){
+    console.log(this);
+    debugger;
     return this.books;
 };
 

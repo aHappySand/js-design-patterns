@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>原型式继承</title>
+
+    <script type="text/javascript" src="4.3 原型式继承.js"></script>
+
+    <script type="text/javascript">
+        var author1 = clone(Author);
+        author1.name = 'zzzz';//新属性
+        author1.books = ['javascript designs patterns', 'javascript designs patterns 2'];
+
+        alert(author1.getName());
+        alert(author1.getBooks());
+
+
+        var author2 = clone(Author);
+        alert(author2.name);//指向原型对象的同名属性Person.name
+        author2.name = 'aaaa';//新属性，Author.name
+        author2.books.push('new book');//指向的是Author.books，修改了原型对象的默认值，所有其他的对象(还未修改默认属性值)也会有这个默认值
+        alert(author2.books);
+
+        alert(author1.getName());//zzzz
+        alert(author1.getBooks());//'javascript designs patterns', 'javascript designs patterns 2'
+
+        var author3 = clone(Author);
+        alert(author3.getBooks());// new book
+
+        author2.books = [];//指向author2的新属性
+        author2.books.push('myself new book');//指向author2的新属性
+
+        var author4 = clone(Author);
+        alert(author4.getBooks());// new book
+    </script>
+</head>
+
+    <body>
+
+        <div>
+            <h3>类式继承:</h3>
+            <ul>
+                <li>节约内存：原型链读取成员的方式使得所有克隆出来的对象都共享每个属性和方法的唯一一份实例，只有在直接设置了某个克隆出来的对象的属性和方法，情况才会变化</li>
+                <li>更简洁</li>
+            </ul>
+        </div>
+        
+        <div>
+            <h3>原型式继承:</h3>
+            <ul>
+                <li>创建的每个对象在内存中都有自己的一套属性（和私有方法）的副本</li>
+                <li>代码复杂难懂一点</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3>继承与封装</h3>
+            <p>从现有的类派生出一个子类时，只有公用和特权成员会被继承下来。</p>
+            <p>
+            门户大开型类是最适合于派生子类的。他们所有成员都是公开的，因此可以被遗传给子类。如果某个成员需要稍加隐藏，可以使用下划线符合规范。
+            </p>
+            <p>在派生具有真正的私有成员的类时，因为其特权方法是公用的，所以它们会被遗传下来。籍此可以在子类中间接访问父类的私有属性，但子类自身的实例方法都不能直接访问这些私有属性。父类的私有成员只能通过这些既有的特权方法进行访问，你不能在子类中添加能够直接访问它们的新的特权方法。</p>
+        </div>
+    </body>
+</html>

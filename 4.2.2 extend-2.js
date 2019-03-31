@@ -4,7 +4,7 @@ function extend(subClass, superClass){
     F.prototype = superClass.prototype;
     subClass.prototype = new F();
     subClass.prototype.constructor = subClass;
-
+    //添加一个属性，继承的父类原型
     subClass.superclass = superClass.prototype;
     if(superClass.prototype.constructor == Object.prototype.constructor){
         superClass.prototype.constructor = superClass;
