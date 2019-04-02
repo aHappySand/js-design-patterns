@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>拥有私用成员的单体：使用下划线表示法</title>
+    <script>
+        /* DataParser singleton, converts character delimited strings into arrays */
+        var GiantCorp = {};
+        GiantCorp.DataParser = {
+            //private method
+            _stripWhitespace: function(str){
+                return str.replace(/\s+/, '');
+            },
+            _stringSplit: function(str, delimiter){
+                return str.split(delimiter);
+            },
+            //public method
+            stringToArray: function(str, delimiter, stripWS){
+                if(stripWS){
+                    str = this._stripWhitespace(str);
+                }
+                var outputArray = this._stringSplit(delimiter);
+                return outputArray;    
+            }
+        };
+    </script>
+
+</head>
+    <body>
+        <ul>
+            <li></li>
+        </ul>
+    </body>
+</html>

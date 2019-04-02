@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>拥有私用成员的单体：使用下划线表示法</title>
+    <script>
+        /* Singleton as an object Literal. */
+        var GiantCorp = {};
+        GiantCorp.Singleton = {};
+
+        //定义之后立即执行的函数创建体
+        /* Singleton with private members, step1*/
+        GiantCorp.Singleton = (function(){
+            var privateAtrribute1 = false;
+            var privateMethod1 = function(){
+                
+            };
+            return {
+                publicAttribute1: true,
+                publicAttribute2: 10,
+                publicMethod1: function(){
+
+                },
+                publicMethod2: function(){
+
+                }
+            };
+        })();
+    </script>
+
+</head>
+    <body>
+        <ul>
+            <li></li>
+        </ul>
+    </body>
+</html>

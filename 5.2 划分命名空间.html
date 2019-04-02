@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>单体的基本结构</title>
+    <script>
+        /*Declared globally*/
+        function findProduct(id){
+
+        }
+        //...
+        /* 其他地方又定义了 */
+        var resetProduct = document.getElementById('reset-product');
+        //将上面的变量覆盖掉了
+        var findProduct = document.getElementById('find-product');
+
+        //解决办法：
+        /* Using a namespace */
+        var ProductTools = {
+            findProduct: function(id){
+
+            }
+        };
+
+
+
+
+        /* GiantGorp namespace 
+            包含自己的所有代码的全局变量
+        */
+        var GiantGorp = {};
+
+        /* 然后可以分门别类地把自己的代码和数据组织到这个全局对象中的各个对象（单体）中 */
+        GiantGorp.Common = {
+            //A singleton with common methods userd by all objects and modules
+        };
+
+        GiantGorp.ErrorCodes = {
+            //An object literal userd to store data
+        };
+
+        GiantGorp.PageHandler = {
+            //A singleton with page specific methods and attributes.
+        };
+
+        /* RegPage singleton, page handler object */
+        GiantGorp.RegPage = {
+            //Constants
+            FORM_ID:'reg-form',
+            OUTPUT_ID: 'reg-results',
+            //Form handling methods.
+            handleSubmit: function(e){
+                e.preventDefault();//Stop the normal from submission.
+                var data = {};
+                var inputs = GiantGorp.RegPage.formEl.getElementsByTagName('input');
+
+                //Collect the values of the input fields in the form
+                for (var i = 0, len = inputs.length; i < len; i++){
+                    data[inputs[i].name] = inputs[i].value;
+                }
+
+                //Send the form values back to the server.
+                GiantGorp.RegPage.sendRegistration(data);
+            },
+            sendRegistration: function(data){
+                //Make an XHR request and call displayResult() when the response is received.
+            },
+            displayResult: function(response){
+                GiantGorp.RegPage.outputEl.innerHTML = response;
+            },
+            //Initialization method.
+            init: function(){
+                GiantGorp.RegPage.formEl = $(GiantGorp.RegPage.FORM_ID);
+                GiantGorp.RegPage.outputEl = $(GiantGorp.RegPage.OUTPUT_ID);
+
+                addEvent(GiantGorp.RegPage.formEl, 'submit', GiantGorp.RegPage.handleSubmit)
+            }
+        };
+
+        addLoadEvent(GiantGorp.RegPage.init);
+    </script>
+</head>
+    <body>
+        <ul>
+            <li></li>
+            <li>通过单体类来划分命名空间，以减少网页中全局变量的数目</li>
+        </ul>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>单体的基本结构</title>
+    <script>
+        /* Basic Singleton 
+           可以通过类名来修改，添加，删除成员
+           违背一条原则：类可以扩展，但不应该被修改。
+        */
+		var Singleton = {
+			attr1: true,
+			attr2: 10,
+			method1: function(){
+
+			},
+			method2: function(){
+
+			}
+		};
+        Singleton.attr1 = true;
+
+    </script>
+</head>
+    <body>
+        <ul>
+            <li>单体：包含着方法和属性成员的对象自身，以及用于访问它的变量，这个变量通常是全局性的。</li>
+            <li>通过单体确保对象只存在一份实例，就可以确信代码使用的都是同一份全局资源</li>
+            <li>通过单体类来划分命名空间，以减少网页中全局变量的数目</li>
+        </ul>
+    </body>
+</html>
