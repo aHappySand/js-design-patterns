@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>单体：下划线与闭包</title>
+    <script>
+        /* Singleton as an object Literal. */
+        var GiantCorp = {};
+
+        GiantCorp.DataParser = (function(){
+            //private attribute
+            var whitespaceRegex = /\s+/;
+            //private method
+            function stripWhitespace(str){
+                return str.replace(whitespaceRegex, '');
+            }
+
+            function stringSplit(str, delimiter){
+                return str.split(delimiter);
+            }
+
+            //everything returned in the object literal is public,
+            //but can access the methods in the closure created above
+            //使用上面的属性或方法，就不用再在前面加‘this’或‘命名空间’，这些前缀只用于访问单体对象的公用成员
+            return {
+                stringToArray: function(str, delimiter, stringWS){
+                    if(stringWS){
+                        str = stripWhitespacestr;
+                    }
+
+                    var outputArray = stringSplit(str, delimiter);
+                    return outputArray;
+                }
+            };
+        })();
+    </script>
+
+</head>
+    <body>86
+        <ol>
+            <li>闭包：私用方法和属性可以直接用期名称访问，不必再在前面加‘this’或‘命名空间’，这些前缀只用于访问单体对象的公用成员</li>
+            <li>闭包比下划线的有几个优点：把私有成员放到闭包中可以确保其不会在单体对象之外被使用。可以自由地改变对象的实现细节，而不会殃及别人的代码。还可以
+            使用这种方法对数据进行保护和封装</li>
+            <li>闭包：单体类只会被实例化一次</li>
+        </ol>
+    </body>
+</html>

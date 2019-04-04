@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>单体：下划线与闭包</title>
+    <script>
+        /* Singleton as an object Literal. */
+        var GiantCorp = {};
+        GiantCorp.Singleton = (function(){
+            var uniqueInstance;
+            function constructor(){
+                alert("only one");
+                //private members
+                var privateAttribute1 = false;
+                var privateAttribute2 = [1, 2, 3];
+
+                function privateMethod1(){
+
+                }
+
+                return {
+                    publicAttribute1: true,
+                    publicAttribute2: 10,
+                    publicMethod1: function(){
+                        alert("惰性实例化");
+                    }
+                };
+            }
+
+            return {
+                getInstance: function(){
+                    if(!uniqueInstance){
+                        uniqueInstance = constructor();
+                    }
+                    return uniqueInstance;
+                }
+            }
+        })();
+
+        GiantCorp.Singleton.getInstance().publicMethod1();
+        GiantCorp.Singleton.getInstance().publicMethod1();
+
+        GiantCorp.Singleton.getInstance().publicMethod1();
+        
+    </script>
+
+</head>
+    <body>
+        <ol>
+            <li>惰性加载单体的缺点之一就是复杂性，代码并不直观，不易理解</li>
+        </ol>
+    </body>
+</html>
