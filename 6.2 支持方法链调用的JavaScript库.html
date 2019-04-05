@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>6.2 支持方法链调用的JavaScript库</title>
+
+    <script type="text/javascript" src="6.2 支持方法链调用的JavaScript库.js"></script>
+    <script>
+      
+    </script>
+    <style type="text/css">
+        .hello{
+            color: red;
+        }
+    </style>    
+</head>
+    <body>
+        <ol>
+            <li id='example'>
+                添加安装器可以自行设置函数名，可加上命名空间，这样可以避免和其他js库的函数名重复。
+            </li>
+        </ol>
+    </body>
+    <script type="text/javascript">
+        (function(){
+            var get = com.example.util.get;
+            get('example').addEvent('click', function(){
+                get(this).addClass('hello');    
+            });
+        })();
+
+    </script>
+</html>

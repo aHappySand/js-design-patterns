@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>6.3 使用回调从支持链式调用的方法获取数据</title>
+
+    <script>
+      
+        // Accessor without function callbacks:returning requested data oin accessors
+        window.API = window.API || function(){
+            var name = 'Hello World';
+            this.setName = function(newName){
+                name = newName;
+                return this;
+            };
+
+            this.getName = function(){
+                return name;
+            };
+        };
+
+        //implementation code
+        var o = new API;
+        console.log(o.getName()); 
+        console.log(o.setName('keyi').getName()); 
+
+
+        //accessor with function callbacks
+        window.API2 = window.API2 || function(){
+            var name = "Hello World";
+            this.setName = function(newName){
+                name = newName;
+                return this;
+            };
+            //使用回调函数
+            this.getName = function(callback){
+                callback.call(this, name);
+                return this;
+            };
+        };
+
+        var o2 = new API2;
+        o2.getName(console.log).
+        setName('zhangsan').getName(console.log);
+
+        var oo = new API2;
+        oo.getName(console.log);
+    </script>
+    <style type="text/css">
+        .hello{
+            color: red;
+        }
+    </style>    
+</head>
+    <body>
+        <ol>
+            <li id='example'>
+                在js中对象是作为引用被传递的。
+            </li>
+        </ol>
+    </body>
+    
+</html>
