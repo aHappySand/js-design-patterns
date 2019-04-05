@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>简单工厂</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+    <script>
+        /* BicycleShop class */
+        var BicycleShop = function(){};
+        BicycleShop.prototype = {
+            sellBicycle: function(model){
+                var bycycle;
+                switch(model){
+                    case 'The Speedster':
+                        bicycle = new Speedster();
+                        break;
+                    case 'The Lowrider':
+                        bicycle = new Lowrider();
+                        break;
+                    default:
+                        bicycle = new ComfortCruiser();
+                        break;
+                }
+
+                Interface.ensureImplements(bicycle, Bicycle);
+                bicycle.assemble();
+                bicycle.wash();
+
+                return bicycle;
+            }
+        };
+
+        /* the Bicycle interface */
+        var Bicycle = new Interface('Bicycle', ['assemble', 'wash', 'ride', 'repair']);
+
+        /* Speedster class */
+        var Speedster = function(){
+
+        };
+
+        Speedster.prototype = {
+            assemble: function(){
+                
+            },
+            wash: function(){
+
+            },
+            ride: function(){
+
+            }, 
+            repair:function(){
+
+            }
+        };
+
+        var bicycle4s = new BicycleShop();
+        var newBike = bicycle4s.sellBicycle('The Speedster');
+
+
+    </script>
+
+</head>
+    <body>
+        <ol>
+            <li id='example'>
+                BicycleFactory 对象可以供各种类来创建新的自行车实例。集中在一个地方管理。
+            </li>
+        </ol>
+    </body>
+    
+
+    <script type="text/javascript">
+        /* BicycleFactory namespace */
+        var BicycleFactory = {
+            createBicycle: function(model){
+                var bycycle;
+                switch(model){
+                    case 'The Speedster':
+                        bicycle = new Speedster();
+                        break;
+                    case 'The Lowrider':
+                        bicycle = new Lowrider();
+                        break;
+                    default:
+                        bicycle = new ComfortCruiser();
+                        break;
+                }
+
+                Interface.ensureImplements(bicycle, Bicycle);
+                return bicycle;
+            }
+        };
+
+        /* BikeShop class, improved */
+        var BikeShop = function(){
+            sellBicycle: function(model){
+                var bike = BicycleFactory.createBicycle(model);
+                bike.assemble();
+                bike.wash();
+                return bike;
+            }
+        };
+    </script>
+</html>

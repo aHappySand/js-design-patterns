@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>工厂模式</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+    
+</head>
+    <body>
+        <ol>
+            <li id='example'>
+                 真正的工厂模式与简单工厂模式的区别在于，它不是另外使用一个类或对象来创建自行车，而是使用一个子类。
+            </li>
+            <li>按照正式定义，工厂是一个将其成员对象的实例化推迟到子类中进行的类</li>
+        </ol>
+    </body>
+    
+
+    <script type="text/javascript">
+        /* the Bicycle interface */
+        var Bicycle = new Interface('Bicycle', ['assemble', 'wash', 'ride', 'repair']);
+
+        /* AcmeSpeedster class */
+        var AcmeSpeedster = function(){
+
+        };
+
+        AcmeSpeedster.prototype = {
+            assemble: function(){
+                
+            },
+            wash: function(){
+
+            },
+            ride: function(){
+
+            }, 
+            repair:function(){
+
+            }
+        };
+
+
+        /* GeneralProductSpeedster class */
+        var GeneralProductSpeedster = function(){
+
+        };
+
+        GeneralProductSpeedster.prototype = {
+            assemble: function(){
+                
+            },
+            wash: function(){
+
+            },
+            ride: function(){
+
+            }, 
+            repair:function(){
+
+            }
+        };
+
+
+        /* BicycleShop class (abstract) */
+        var BicycleShop = function(){};
+        BicycleShop.prototype = {
+            sellBicycle: function(model){
+                var bicycle = this.createBicycle(model);
+                bicycle.assemble();
+                bicycle.wash();
+                return bicycle;
+            },
+            createBicycle: function(model){
+                throw new Error('Unsupported operation on an abstract class.');
+            }
+        };
+
+        /* AcmeBicycleShow class */
+        var AcmeBicycleShow = function(){};
+        extend(AcmeBicycleShow, BicycleShop);
+        AcmeBicycleShow.prototype.createBicycle = function(model){
+            var bicycle;
+            switch(model){
+                case 'The Speedster':
+                    bicycle = new AcmeSpeedster();
+                    break;
+                case 'The Lowrider':
+                    bicycle = new AcmeLowrider();
+                    break;
+                default:
+                    bicycle = new AcmeComfortCruiser();
+                    break;
+            }
+            debugger;
+            Interface.ensureImplements(bicycle, Bicycle);
+            return bicycle;
+        };
+
+
+        /* GeneralProductBicycleShow class */
+        var GeneralProductBicycleShow = function(){};
+        extend(GeneralProductBicycleShow, BicycleShop);
+        GeneralProductBicycleShow.prototype.createBicycle = function(model){
+            var bicycle;
+            switch(model){
+                case 'The Speedster':
+                    bicycle = new GeneralProductSpeedster();
+                    break;
+                case 'The Lowrider':
+                    bicycle = new GeneralProductLowrider();
+                    break;
+                default:
+                    bicycle = new GeneralProductComfortCruiser();
+                    break;
+            }
+            Interface.ensureImplements(bicycle, Bicycle);
+            return bicycle;
+        };
+
+
+        var acmeCurisers = new AcmeBicycleShow();
+        var acmeBike = acmeCurisers.sellBicycle('The Speedster');
+
+        var geneCurisers = new GeneralProductBicycleShow();
+        var geneBike = geneCurisers.sellBicycle('The Speedster');
+
+        
+    </script>
+</html>
