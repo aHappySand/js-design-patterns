@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>XHR工厂</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+    <script type="text/javascript" src="7.4 SimpleAjaxHandler.js"></script>
+    
+</head>
+    <body>
+        <ol>
+        <li>createXHRObject工厂方法根据当前环境的具体情况返回一个XHR对象，在首次执行时，它会依次尝试三种用于创建XHR对象的不同方法。
+        一旦遇到一种管用的，它就会返回所创建的对象并将自身改为用以创建这个对象的函数。这个新函数于是摇身一变成了createXHRObject方法。这种技术被称为memorizing</li>
+        </ol>
+    </body>
+    
+
+    <script type="text/javascript">
+        var ajax = new SimpleAjaxHandler();
+        var callback = {
+            success: function(text, xml){},
+            failure: function(status){}
+        }
+        ajax.request('GET', 'test.php', callback);
+        ajax.request('GET', 'test.php', callback);
+        ajax.request('GET', 'test.php', callback);
+        ajax.request('GET', 'test.php', callback);
+        
+
+        var ajax2 = new SimpleAjaxHandler();
+        var callback2 = {
+            success: function(text, xml){},
+            failure: function(status){}
+        }
+        ajax2.request('GET', 'test.php', callback2);
+        ajax2.request('GET', 'test.php', callback2);
+        ajax2.request('GET', 'test.php', callback2);
+        ajax2.request('GET', 'test.php', callback2);
+    </script>
+</html>

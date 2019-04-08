@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>XHR工厂</title>
+<!-- 
+    <script type="text/javascript" src="Interface.js"></script>
+    <script type="text/javascript" src="6.2 支持方法链调用的JavaScript库.js"></script>
+    <script type="text/javascript">
+         installHelper(window, '$');
+    </script>
+    <script type="text/javascript" src="7.4 SimpleAjaxHandler.js"></script>
+    <script type="text/javascript" src="7.4.1 专用型连接对象.js"></script>
+    <script type="text/javascript" src="7.5 RSS阅读器.js"></script>
+ -->
+    <script type="text/javascript" src="jquery-3.3.1.js"></script>
+</head>
+    <body>
+        <div id="feed-readers"></div>
+    </body>
+    
+
+    <script type="text/javascript">
+        // FeedManager.createFeedReader();
+
+        $.ajax({
+            url:'http://rss.huanqiu.com/world/hot.xml?callback=?',
+            type: 'GET',
+            dataType: 'jsonp',  // 请求方式为jsonp
+            success: function(response){
+                console.log(response);
+            }
+        });
+    </script>
+</html>

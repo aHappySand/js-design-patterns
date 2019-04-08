@@ -28,6 +28,11 @@ Function.prototype.method = function(name, fn){
     	}
     	return this;
     }).
+    method('append', function(el){
+    	this.each(function(par){
+    		par.appendChild(el);
+    	});
+    }).
     method('addEvent', function(type, fn){
     	var add = function(el){
     		if(window.addEventListener){
@@ -123,9 +128,10 @@ Function.prototype.method = function(name, fn){
  * 另外一种更复杂的方式
  */
 //define a namespace without overwriting it if it already exists.
+/*
 window.com = window.com || {};
 com.example = com.example || {};
 com.example.util = com.example.util || {};
 
 installHelper(com.example.util, 'get');
-
+*/
