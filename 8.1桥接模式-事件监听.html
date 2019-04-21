@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>桥接模式示例：事件监听</title>
+
+</head>
+    <body>
+        <div id="feed-readers"></div>
+    </body>
+    
+
+    <script type="text/javascript">
+        function addEvent(elem, evt, callback){
+            elem.addEventListener(evt, callback, false);
+        }
+        function asyncRequest(type, url, callback){
+            var SimpleAjaxHandler = new SimpleAjaxHandler();
+            var cb = {
+                success: callback
+            };
+            SimpleAjaxHandler.reqest(type, url, cb);
+        }
+        var elem = document.getElementById('feed-readers');
+        
+
+
+
+        addEvent(elem, 'click', getBeerById);
+        function getBeerById(e){
+            var id = this.id;
+            asyncRequest('GET', 'beer?id=' + id, function(resp){
+                console.log('Request beer:' + resp);
+            });
+        }
+
+
+        /**getBeerById2没有和事件绑定在一起，而getBeerById和事件绑定了在一起
+         * 接口方法
+         */
+        function getBeerById2(id, callback){
+            asyncRequest('GET', 'beer?id=' + id, function(resp){
+                callback(resp);
+            });
+        }
+        addEvent(elem, 'click', getBeerByIdBridege);
+        function getBeerByIdBridege(e){
+            getBeerById2(this.id, function(beer){
+                console.log('Request beer:' + beer);
+            });
+        }
+
+    </script>
+</html>

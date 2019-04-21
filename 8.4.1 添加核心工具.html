@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>桥接模式示例：事件监听</title>
+
+    <script type="text/javascript" src="8.4.1 添加核心工具.js"></script>
+</head>
+    <body>
+        <div id="feed-readers">
+            
+        </div>
+    </body>
+    
+
+    <script type="text/javascript">
+        var arr = [1, 2, 3, 4, 5, 6];
+        arr.forEach(function(val, index){
+            console.log(index + '=' + val);
+        });
+
+        var newArr = arr.filter(function(val, index, th){
+            if(val % 2 == 0){
+                return true;
+            }else{
+                return false
+            }
+        });
+
+        console.log(newArr);
+    </script>
+</html>

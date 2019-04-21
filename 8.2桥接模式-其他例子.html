@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>桥接模式示例：事件监听</title>
+
+</head>
+    <body>
+        <div id="feed-readers">
+            桥接模式可以把多个类联结起来，从类的角度看，这意味着把接口作为公开的代码编程，而把类的实现作为私用代码编写。
+        </div>
+    </body>
+    
+
+    <script type="text/javascript">
+        var Public = function(){
+            var secret = 3;
+            //特权函数
+            this.getPrivilegedGeeter = function(){
+                return secret;
+            };
+        };
+
+
+        //使用桥接模式联结多个类
+        var Class1 = function(a, b, c){
+            this.a = a;
+            this.b = b;
+            this.c = c;
+        };
+
+        var Class2 = function(d){
+            this.d = d;
+        };
+
+        var BridgeClass = function(a, b, c, d){
+            this.one = new Class1(a, b, c);
+            this.two = new Class2(d);
+        };
+
+
+        
+    </script>
+</html>
