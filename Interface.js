@@ -54,3 +54,30 @@ function extend(subClass, superClass){
         superClass.prototype.constructor = superClass;
     }
 }
+
+function addEvent(elem, evt, callback){
+    elem.addEventListener(evt, callback, false);
+}   
+
+function setCookie(cname, cvalue, exdays){
+    exdays = exdays||2;
+    expires = "";
+    if(exdays){
+        var d = new Date();
+        d.setTime(d.getTime()+(exdays*24*60*60*1000));
+        expires = "expires="+d.toGMTString()+";path=/";
+    }
+    document.cookie = cname+"="+cvalue+";" + expires;
+}
+
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0, len = ca.length; i<len; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) { 
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
