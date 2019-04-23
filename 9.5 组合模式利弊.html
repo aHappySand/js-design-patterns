@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>组合模式</title>
+</head>
+    <body>
+        <ul>
+            <li>
+                <h4>组合模式之利：</h4>
+                <div>
+                    <p>不必编写大量手工遍历数组或其他数据结构的粘合代码，只需要对最顶层的对象执行操作，让每个子对象自己传递这个操作即可。</p>
+                    <p>各个对象之间的耦合非常松散，只要他们实现了同样的接口，那么改变他们的位置或变换他们只是举手之劳。促进了代码的重用，有利于代码的重构</p>
+                </div>
+            </li>
+            <li>
+                <h4>组合模式之弊：</h4>
+                <div>
+                    <p>可能掩盖了它所支持的每一种操作的代价。由于组合对象调用的任何操作都会被传递到它的所有子对象，如果这个层次体现很大的话，系统的性能将会受到影响。</p>
+                </div>
+            </li>
+        </ul>
+    </body>
+</html>
