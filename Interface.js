@@ -56,7 +56,13 @@ function extend(subClass, superClass){
 }
 
 function addEvent(elem, evt, callback){
-    elem.addEventListener(evt, callback, false);
+    if(window.addEventListener){
+        elem.addEventListener(evt, callback, false);
+    }else if(window.attachEvent){
+        elem.attachEvent('on' + evt, callback);
+    }else{
+        elem['on' + evt] = callback;
+    }
 }   
 
 function setCookie(cname, cvalue, exdays){
