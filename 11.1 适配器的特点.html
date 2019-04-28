@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>适配器</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+
+</head>
+    <body>
+    	<div id='wrapper'>
+            适配器模式可用来在现有接口和不兼容的类之间进行适配。使用这种模式的对象又叫装配器，因为他们是在用一个新的接口包装另一个对象。
+    	</div>
+
+    	<div>
+            从表面上看，适配器模式很像门面模式，它们都是对别的对象进行包装并改变其呈现的接口。二者的差别在于它们如何改变接口。门面元素展现的是一个简化的接口，它并不提供额外的选择，而且有时为了方便完成常见任务，它还会做出一些假定。而适配器则要把一个接口转换成另一个接口，它并不会过滤某些能力，也不会简化接口。
+            如果客户系统期待的API不可用，那就需要用到适配器。
+    	</div>
+    </body>
+    
+
+    <script type="text/javascript">
+        var clientObject = {
+            str1: 'for',
+            str2: 'bar',
+            str3: 'baz'
+        };
+        function interfaceMethod(str1, str2, str3){
+
+        }
+
+        //添加适配器方法：
+        function clientToInterfaceMethod(o){
+            interfaceMethod(o.str1, o.str2, o.str3);
+        }
+        clientToInterfaceMethod(clientObject);
+    </script>
+</html>
