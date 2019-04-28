@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>组合模式：表单验证</title>
+    <script type="text/javascript" src="Interface.js"></script>
+    <script type="text/javascript" src="9.3表单验证.js"></script>
+</head>
+    <body>
+    </body>
+
+    <script type="text/javascript">
+        var contactForm = new CompositeForm('contact-form', 'POST', 'contact')
+
+        /*
+        contactForm.add(new InputField('first-name', 'First Name'));
+        contactForm.add(new InputField('last-name', 'Last Name'));
+        contactForm.add(new InputField('address', 'Address'));
+        contactForm.add(new InputField('city', 'City'));
+        var stateArr = {"a" : "Al", "b" : "B1"};
+        contactForm.add(new SelectField('state', 'State', stateArr));
+        contactForm.add(new TextareaField('comments', 'Comments'));
+        */
+        var fieldset1 = new CompositeFieldset('fieldset1', 'Fieldset1');
+        fieldset1.add(new InputField('first-name', 'First Name'));
+        fieldset1.add(new InputField('last-name', 'Last Name'));
+        contactForm.add(fieldset1);
+
+        var fieldset2 = new CompositeFieldset('fieldset2', 'Fieldset2');
+        fieldset2.add(new InputField('address', 'Address'));
+        fieldset2.add(new InputField('city', 'City'));
+        var stateArr = {"a" : "Al", "b" : "B1"};
+        fieldset2.add(new SelectField('state', 'State', stateArr));
+        fieldset2.add(new TextareaField('comments', 'Comments'));
+        contactForm.add(fieldset2);
+
+        var body = document.getElementsByTagName('body')[0];
+        body.appendChild(contactForm.getElement());
+
+        var btn = document.createElement('input');
+        btn.type = 'button';
+        btn.value = 'save';
+        btn.onclick = function(){
+            contactForm.save();
+        };
+        body.appendChild(btn);
+        addEvent(window, 'load', function(){
+            contactForm.restore();
+        });
+    </script>
+</html>
