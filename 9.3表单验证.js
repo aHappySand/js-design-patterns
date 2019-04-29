@@ -121,6 +121,7 @@ Field.prototype.getValue = function(){
     throw new Error('Unsupported operation on the class Field');
 };
 
+
 var InputField = function(id, label){
     Field.call(this, id);
 
