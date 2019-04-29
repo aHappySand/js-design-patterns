@@ -57,6 +57,7 @@ function extend(subClass, superClass){
 
 
 var DED = window.DED || {};
+DED.util = DED.util || {};
 DED.util.Event = DED.util.Event || {};
 DED.util.Event = {
 	getEvent: function(e){
