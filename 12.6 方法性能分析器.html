@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>装饰者(decorator)的结构</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+    <script type="text/javascript" src="12.6 方法性能分析器.js"></script>
+</head>
+    <body>
+        <ul>
+            <li id='example'>
+            </li>
+        </ul>
+        <h4>装饰者模式与组合模式的比较：</h4>
+        <ul>
+           
+        </ul>
+    </body>
+    <script type="text/javascript">
+
+        /*ListBuilder class.*/
+        var ListBuilder = function(parent, listLength){
+            this.parentEl = document.getElementById(parent);
+            this.listLength = listLength;
+        };
+
+        ListBuilder.prototype = {
+            buildList: function(){
+                var list = document.createElement('ol');
+                this.parentEl.appendChild(list);
+
+                for(var i = 0; i < this.listLength; i++){
+                    var item = document.createElement('li');
+                    list.appendChild(item);
+                }
+            }
+        };
+
+        /* SimpleProfiler class. */
+        var SimpleProfiler = function(compoent){
+            this.compoent = compoent;
+        };
+        SimpleProfiler.prototype = {
+            buildList: function(){
+                var startTime = new Date();
+                this.compoent.buildList();
+                var elapsedTime = (new Date()).getTime() - startTime.getTime();
+                console.log('buildList： ' + elapsedTime + ' ms');
+            }
+        };
+
+        // var list = new ListBuilder('example', 3000);
+        // list = new SimpleProfiler(list);
+        // list.buildList();
+
+        var list2 = new ListBuilder('example', 5000);
+        list2 = new MethodProfiler(list2);
+        list2.buildList();
+                
+        var aFns = new Array(2);
+        for(var i = 0, len = aFns.length; i < len; i++){
+            aFns[i] = function(){alert(i)};
+        }
+        aFns[0]();//2
+        aFns[1]();//2
+
+
+        var aFns2 = new Array(2);
+        for(var i = 0, len = aFns2.length; i < len; i++){
+            (function(idx){
+                aFns2[idx] = function(){alert(idx)};
+            })(i);
+        }
+        aFns2[0]();//0
+        aFns2[1]();//1
+    </script>
+</html>
