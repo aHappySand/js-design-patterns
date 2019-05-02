@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>享元模式</title>
+</head>
+    <body>
+        <h4>享元的结构：</h4>
+        <div>
+            享元模式用于减少应用程序所需对象的数量。<br/>
+            这是通过将对象的内部状态划分为内在数据（intrinsic data）和外在数据（extrinsic data）两类而实现的。<br/>
+            内在数据是指类的内部方法所需要的信息。<br>
+            外在数据则是可以从类身上剥离并存储在其外部的信息。<br>
+            我们可以将内在状态相同的所有对象替换为同一个共享对象，用这种方法可以把对象数量减少到不同内在状态的数量。
+        </div>
+        <dir>
+            创建这种共享对象需要使用工厂，而不是普通的构造函数。
+        </dir>
+    </body>
+
+    <script type="text/javascript">
+        /* Car class, un-optimized */
+        var Car = function(make, model, year, owner, tag, renewDate){
+            this.make = make;
+            this.model = model;
+            this.year = year;
+            this.owner = owner;
+            this.tag = tag;
+            this.renewDate = renewDate;
+        };
+
+        Car.prototype = {
+            getMake: function(){
+                return this.make;
+            },
+            getModel: function(){
+                return this.model;
+            },
+            getYear: function(){
+                return this.year;
+            },
+
+            transferOwnership: function(newOwner, newTag, newRenewDate){
+                this.owner = newOwner;
+                this.tag = newTag;
+                this.renewDate = newRenewDate;
+            },
+            renewRegistration: function(newRenewDate){
+                this.renewDate = newRenewDate;
+            },
+            isRegistrationCurrent: function(){
+                var today = new Date();
+                return today.getTime() < Date.parse(this.renewDate);
+            }
+        };
+    </script>
+
+
+    <script type="text/javascript">
+        //车的自然数据（品牌、型号、出厂日期）属于内在的数据
+        //所有权数据（车主姓名、车牌号和最近登记日期）属于外在数据
+
+        /* Car class,optimized as a flyweight */
+        var Car = function(make, model, year){
+            this.make = make;
+            this.model = model;
+            this.year = year;
+        };
+
+        Car.prototype = {
+            getMake: function(){
+                return this.make;
+            },
+            getModel: function(){
+                return this.model;
+            },
+            getYear: function(){
+                return this.year;
+            }
+        };
+
+        /* CarFactory singleton*/
+        var CarFactory = (function(){
+            var createCars = {};
+            return {
+                createCar: function(make, model, year){
+                    //check to see if this particular combination has been created before
+                    if(createCars[make + '-' + model + "-" + year]){
+                        return createCars[make + '-' + model + "-" + year];
+                    }else{
+                        var car = new Car(make, model, year);
+                        createCars[make + '-' + model + "-" + year] = car;
+                        return car;
+                    }
+                }
+            };
+        })();
+
+        /* CarRecordManager singleton */
+        var CarRecordManager = (function(){
+            var carRecordDatabase = {};
+            return {
+                //add a new car record into the city's system
+                addCarRecord: function(make, model, year, owner, tag, renewDate){
+                    var car = CarFactory.createCar(make, model, year);
+                    carRecordDatabase[tag] = {
+                        owner: owner,
+                        renewDate: renewDate,
+                        car:car
+                    };
+                },
+                //methods priviously contained in the car class
+                transferOwnership: function(tag, newOwner, newTag, newRenewDate){
+                    var record = carRecordDatabase[tag];
+                    record.owner = newOwner;
+                    record.tag = newTag;
+                    record.renewDate = newRenewDate;
+                },
+                renewRegistration: function(tag, newRenewDate){
+                    carRecordDatabase[tag].renewDate = newRenewDate;
+                },
+                isRegistrationCurrent: function(tag){
+                    var today = new Date();
+                    return today.getTime() < Date.parse(carRecordDatabase[tag].renewDate);
+                }
+            };
+        })();
+    </script>
+</html>
