@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>装饰者模式：函数装饰者</title>
+</head>
+    <body>
+        <ul>
+            <li>
+            </li>
+        </ul>
+    </body>
+
+    <script type="text/javascript">
+        function upperCaseDecorator(func){
+            return function(){
+                return func.apply(this, arguments).toUpperCase();
+            };
+        }
+
+        function getDate(){
+            return (new Date()).toString();
+        }
+
+        getDateCaps = upperCaseDecorator(getDate);
+        console.log(getDate());
+        console.log(getDateCaps());
+    </script>
+</html>
