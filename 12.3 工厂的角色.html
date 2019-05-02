@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>装饰者模式：工厂的角色</title>
+</head>
+    <body>
+        <ul>
+            <li>
+            </li>
+        </ul>
+    </body>
+
+    <script type="text/javascript">
+
+        /*  第7章  Original AcmeBicycleShop factory class*/
+        
+
+        /* AcmeBicycleShop factory class, with decorators */
+        var AcmeBicycleShop = function(){};
+        extend(AcmeBicycleShop, BicycleShop);
+
+        AcmeBicycleShop.prototype.createBicycle = function(model, options){
+            //Instantiate the bicycle object.
+            var bicycle = new AcmeBicycleShop.models[model]();
+
+            //Iterate through the options and instantiate decorators.
+            for(var i = 0, len = options.length; i < len; i++){
+                var decorator = AcmeBicycleShop.options[options[i].name];
+                if(typeof decorator !== 'function'){
+                    throw new Error('Decorator ' + options[i].name + ' not found.');
+                }
+
+                var argument = options[i].arg;
+                bicycle = new decorator(bicycle, argument);
+            }
+
+            //Check the interface and return the finished object.
+            Interface.ensureImplements(bicycle, Bicycle);
+            return bicycle;
+        };
+
+        //Model name to class name mapping.
+        AcmeBicycleShop.models = {
+            'The Speedster': AcmeSpeedster,
+            'The Lowrider': AcmeLowrider,
+            'The Flatlander': AcmeFlatlander,
+            'The Comfort Cruiser': AcmeComfortCruiser
+        };
+        //Option name to decorator class name mapping.
+        AcmeBicycleShop.options = {
+            'headlight': HeadlightDecorator,
+            'tailight': TailightDecorator,
+            'bell': BellDecorator,
+            'basket': BasketDecorator,
+            'color': FrameColorDecorator,
+            'lifetime warranty': LifetimeWarrantyDecorator,
+            'timed warranty': TimedWarrantyDecorator
+        };
+    </script>
+</html>
