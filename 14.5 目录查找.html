@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>代理模式示例：目录查找</title>
+</head>
+    <body>
+        <div>
+            
+        </div>
+    </body>
+    <script type="text/javascript">
+        /* Directory interface */
+        var Directory = new Interface('Directory', ['showPage']);
+
+        /* PersonnelDirectory class, the real subject */
+        var PersonnelDirectory = function(parent){
+            this.parent = parent;
+            this.xhrHandler = XHRHandler.createXHRHandler();
+            this.data = null;
+            this.currentPage = null;
+
+            var that = this;
+            var callback = {
+                success: that._configure,
+                failure: function(){
+                    throw new Error('PersonnelDirectory: failure in data retrievel.');
+                }
+            };
+
+            this.xhrHandler.request('GET', 'directory', callback);
+        };
+
+        PersonnelDirectory.prototype = {
+            _configure: function(responseText){
+                this.data = eval('('+ responseText +')');
+                //...
+                this.currentPage = '1';
+            },
+            showPage: function(page){
+                $('page-' + this.currentPage).style.display = 'none';
+                $('page-' + page).style.display = 'block';
+                this.currentPage = page;
+            }
+        };
+
+        /* DirectoryProxy class, with loading message*/
+        var DirectoryProxy = function(parent){
+            this.parent = parent;
+            this.directory = null;
+            this.warning = null;
+            this.interval = null;
+            this.initialized = false;
+            var that = this;
+            addEvent(parent, 'mouseover', that._initialize);
+        };
+
+        DirectoryProxy.prototype = {
+            _initialize: function(){
+                this.warning = document.createElement('div');
+                this.parent.appendChild(this.warning);
+                this.warning.innerHTML = 'the company directory is loading...';
+
+                this.directory = new PersonnelDirectory(this.parent);
+                var that = this;
+                this.interval = setInterval(function(){
+                    that._checkInitialization();
+                }, 100);
+
+            }, 
+            _checkInitialization: function(){
+                if(this.directory.currentPage != null){
+                    clearInterval(this.interval);
+                    this.initialized = true;
+                    this.parent.removeChild(this.warning);
+                }      
+            },
+            showPage: function(page){
+                if(!this.initialized){
+                    return;
+                }
+                return this.directory.showPage(page);
+            }
+        };
+    </script>
+</html>
