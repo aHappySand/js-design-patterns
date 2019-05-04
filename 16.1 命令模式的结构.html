@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>命令模式的结构</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+</head>
+    <body>
+        <div>
+            <h4>概述：</h4>
+            <div>
+                命令模式是一种封装方法调用的方式。命令模式和普通函数有所不同，它可以用来对方法调用进行参数化处理和传送，惊这样处理过的方法调用可以在任何需要的时候执行。
+                它也可以用来消除调用操作的对象和实现操作的对象之间的耦合，这为各种具体的类的更换带来了极大的灵活性。
+            </div>
+            <h4>结构：</h4>
+            <div>
+                最简形式的命令对象是一个操作和应以调用这个操作的对象的结合体。所有的命令对象都有一个执行操作，其用途就是调用命令对象所绑定的操作。
+                在大多数命令对象中，这个操作是一个名为execute或run的方法。使用同样接口的所有命令对象都可以被同等对待，并且可以随意互换。
+            </div>
+            <div id='btns'></div>
+            <div>
+                <h5>客户（client）、调用者（invoking object）和接收者（receiving object）</h5>
+                <div>
+                    客户负责实例化命令并将其交给调用者。
+                    下面的例子中，for循环中的代码就是客户，它通常被包装为一个对象，但也不是非这样不可。
+                    调用者接过命令并将其保存下来，它会在某个时候调用该命令对象的execute方法，或者将其交给另一个潜在的调用者。
+                    下面的例子中，调用者就是UiButton类创建的按钮。接收者则是实际执行操作的对象。
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        //接收者
+        var Ad = function(name){
+            this.name = name;
+        };
+        Ad.prototype = {
+            start: function(){
+                console.log("start: " + this.name);
+            },
+            stop: function(){
+                console.log('stop: ' + this.name);
+            }
+        };
+        function getAds(){
+            return [
+                new Ad('ad1'),
+                new Ad('ad2'),
+                new Ad('ad3')
+            ];
+        }
+
+        var UiButton = function(val, command){
+            this.element = document.createElement('input');
+            document.getElementById('btns').appendChild(this.element);
+
+            this.element.type = 'button';
+            this.element.value = val;
+            addEvent(this.element, 'click', function(){
+                // command.execute();
+                command();
+            });
+        };
+
+
+
+        /*AdCommand interface*/
+        var AdCommand = new Interface('AdCommand', ['execute']);
+        /* StopAd command class.*/
+        var StopAd = function(adObject){//implements AdCommand
+            this.ad = adObject;
+            Interface.ensureImplements(StopAd, AdCommand);
+        };
+        StopAd.prototype.execute = function(){
+            this.ad.stop();
+        };
+
+        /*StartAd command class.*/
+        var StartAd = function(adObject){
+            this.ad = adObject;
+            Interface.ensureImplements(StartAd, AdCommand);
+        };
+        StartAd.prototype.execute = function(){
+            this.ad.start();
+        };
+
+        //用闭包创建命令对象
+        /* Commands using closures. */
+        function makeStart(adObject){
+            return function(){
+                adObject.start();
+            };
+        }
+
+        function makeStop(adObject){
+            return function(){
+                adObject.stop();
+            };
+        }
+
+
+        
+        /* Implementation code*/
+        var ads = getAds();
+        for(var i = 0, len = ads.length; i < len; i++){
+            //create command objects for starting and stoping the ad.
+            // var startCommand = new StartAd(ads[i]);
+            // var stopCommand = new StopAd(ads[i]);
+
+            var startCommand = makeStart(ads[i]);
+            var stopCommand = makeStop(ads[i]);
+
+            //create the ui element that will execute the command on click
+            new UiButton('Start ' + ads[i].name, startCommand);
+            new UiButton('Stop ' + ads[i].name, stopCommand);
+        }
+
+
+    </script>
+</html>

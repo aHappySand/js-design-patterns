@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>命令模式示例：菜单项</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+    <script type="text/javascript" src="16.4 取消操作和命令日志.js"></script>
+</head>
+    <body>
+
+    </body>
+
+    <script type="text/javascript">
+        /*Implementation code*/
+       var body = document.getElementsByTagName('body')[0];
+       var cursor = new Cursor(400, 400, body);
+       var undoStack = [];
+
+       var upCommand = new UndoDecorator(new MoveUp(cursor), undoStack);
+       var downCommand = new UndoDecorator(new MoveDown(cursor), undoStack);
+       var leftCommand = new UndoDecorator(new MoveLeft(cursor), undoStack);
+       var rightCommand = new UndoDecorator(new MoveRight(cursor), undoStack);
+
+       var upButton = new CommandButton('Up', upCommand, body);
+       var downButton = new CommandButton('Down', downCommand, body);
+       var leftButton = new CommandButton('Left', leftCommand, body);
+       var rightButton = new CommandButton('Right', rightCommand, body);
+       var undoButton = new UndoButton('Undo', body, undoStack);
+
+    </script>
+</html>

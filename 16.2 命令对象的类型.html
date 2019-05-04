@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>命令对象的类型</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+</head>
+    <body>
+        <div>
+            <div>
+                命令对象执行的都是同样的任务：隔离调用操作的对象与实际实施操作的对象。
+
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        /* ComplexCommand, a tightly coupled, complex command class. */
+        var ComplexCommand = function(){
+            this.logger = null;
+            this.xhrHandler = null;
+            this.parameters = {};
+        };
+
+        ComplexCommand.prototype = {
+            _init: function(){
+                if(!this.logger){
+                    this.logger = new Logger();
+                }
+                if(!this.xhrHandler){
+                    this.xhrHandler = XHRManager.createXHRHandler();
+                }
+            },
+            setParameter: function(key, value){
+                this.parameters[key] = value;
+            },
+            execute: function(){
+                this._init();
+                this.logger.log('executing command');
+                var psotArray = [];
+                for(var key in this.parameters){
+                    psotArray.push(key + '=' + this.parameters[key]);
+                }
+                var poststr = psotArray.join('&');
+                this.xhrHandler.request('POST', 'scrop', function(){}, poststr);;
+            }
+        };
+
+        //灰色地带：有些命令对象不但封装了接收者的操作，而且其execute方法中也具有一些实现代码
+        /* GrayAreaCommand, somewhere between simple and complex */
+        var GrayAreaCommand = function(receiver){//implements Command
+            this.logger = new Logger();
+            this.receiver = receiver;
+        };
+        GrayAreaCommand.prototype.execute = function(){
+            this.logger.log('executing command');
+            this.receiver.prepareAction();
+            this.receiver.action();
+        };
+    </script>
+
+</html>

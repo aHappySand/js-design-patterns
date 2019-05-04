@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>命令模式示例：菜单项</title>
+
+    <script type="text/javascript" src="Interface.js"></script>
+    <script type="text/javascript" src="16.3 menu.js"></script>
+</head>
+    <body>
+
+    </body>
+
+    <script type="text/javascript">
+        /*Implementation code*/
+        /* Receiver objects, instantiated form exiting classes */
+        var fileActions = new FileActions();
+        var editActions = new EditActions();
+        var insertActions = new InsertActions();
+        var helpActions = new HelpActions();
+
+        /* create the menu bar*/
+        var appMenuBar = new MenuBar();
+
+        /* the File menu */
+        var fileMenu = new Menu('File');
+        var openCommand = new MenuCommand(fileActions.open);
+        var closeCommand = new MenuCommand(fileActions.close); 
+        var saveCommand = new MenuCommand(fileActions.save); 
+        var saveAsCommand = new MenuCommand(fileActions.saveAs);
+
+        fileMenu.add(new MenuItem('Open', openCommand));
+        fileMenu.add(new MenuItem('Close', closeCommand));
+        fileMenu.add(new MenuItem('Save', saveCommand));
+        fileMenu.add(new MenuItem('Save As...', saveAsCommand));
+
+        appMenuBar.add(fileMenu);
+
+        /*Edit menu.*/
+        var editMenu = new Menu('Edit');
+
+        var cutCommand = new MenuCommand(editActions.cut);
+        var copyCommand = new MenuCommand(editActions.copy);
+        var pasteCommand = new MenuCommand(editActions.paste);
+        var deleteCommand = new MenuCommand(editActions.delete);
+
+        editMenu.add(new MenuItem('Cut', cutCommand));
+        editMenu.add(new MenuItem('Copy', copyCommand));
+        editMenu.add(new MenuItem('Paste', pasteCommand));
+        editMenu.add(new MenuItem('Delete', deleteCommand));
+
+        appMenuBar.add(editMenu);
+
+        document.getElementsByTagName('body')[0].appendChild(appMenuBar.getElement());
+        appMenuBar.show();
+    </script>
+</html>
