@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>观察者模式：动画</title>
+</head>
+    <body>
+        <div>
+
+        </div>
+    </body>
+    <script type="text/javascript">
+        //Publisher API
+        var Animation = function(o){
+            this.onStart = new Publisher;
+            this.onComplete = new Publisher;
+            this.onTween = new Publisher;
+        };
+        Animation.method('fly', function(){
+            //begin animation
+            this.onStart.deliver();
+            for(){
+                //deliver frame number
+                this.onTween.deliver(i);
+            }
+            //end animation
+            this.onComplete.deliver();
+        });
+
+        //setup an account with the animation manager
+        var Superman = new Animation({...config properties...});
+        //begin implementing subscribers.
+        var putOnCape = function(i){};
+        var takeOffCape = function(i){};
+
+        putOnCape.subscribe(Superman.onStart);
+        takeOffCape.subscribe(Superman.onComplete);
+
+        //fly can be called anywhere
+        Superman.fly();
+        //for instance:
+        addEvent(element, 'click', function(){
+            Superman.fly();
+        });
+    </script>
+</html>
