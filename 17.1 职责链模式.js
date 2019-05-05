@@ -47,7 +47,6 @@ var PublicLibrary = function(books, firstGenreCatalog){//implements Library
     // this.nonFictionCatalog = new NonFictionCatalog();
     // this.scifiCatalog = new ScifiCatalog();
 
-
     for(var i = 0, len = books.length; i < len; i++){
         this.addBook(books[i]);
     }
@@ -118,6 +117,16 @@ var GenreCatalog = function(){//implements Catalog
 };
 GenreCatalog.prototype = {
     _bookMatchesCriteria: function(book){
+        var genres = book.getGenres();
+        if(book.getTitle().match(/space/i)){
+            return true;
+        }
+        for(var i = 0, len = genres.length; i < len; i++){
+            var genre = genres[i].toLowerCase();
+            if(this.genreNames.indexOf(genre) != -1){
+                return true;
+            }
+        }
         return false;//Default implementation;this method will be overriden in the subclasses.
     },
 
@@ -134,7 +143,7 @@ GenreCatalog.prototype = {
     findBooks: function(request){
         var found = false;
         for(var i = 0, len = request.genres.length; i < len && !found; i++){
-            if(this.genreNames.indexOf(request.genres[i])){
+            if(this.genreNames.indexOf(request.genres[i])!=-1){
                 found = true;
                 break;
             }
@@ -173,30 +182,42 @@ GenreCatalog.prototype = {
     }
 };
 
+/*BiographyCatalog*/
+var BiographyCatalog = function(){//implements Catalog
+    BiographyCatalog.superclass.constructor.call(this);
+    this.genreNames = ['biography', 'bio'];
+};
+extend(BiographyCatalog, GenreCatalog);
+
+/*FantasyCatalog*/
+var FantasyCatalog = function(){//implements Catalog
+    FantasyCatalog.superclass.constructor.call(this);
+
+    this.genreNames = ['fantasy', 'fan'];
+};
+extend(FantasyCatalog, GenreCatalog);
+
+/*MysteryCatalog*/
+var MysteryCatalog = function(){//implements Catalog
+    MysteryCatalog.superclass.constructor.call(this);
+
+    this.genreNames = ['my-stery', 'mystery'];
+};
+extend(MysteryCatalog, GenreCatalog);
+
+/*NonFictionCatalog*/
+var NonFictionCatalog = function(){//implements Catalog
+    NonFictionCatalog.superclass.constructor.call(this);
+
+    this.genreNames = ['non-fiction', 'nonfiction', 'non-fic'];
+};
+extend(NonFictionCatalog, GenreCatalog);
+
 /*ScifiCatalog*/
 var ScifiCatalog = function(){//implements Catalog
+    ScifiCatalog.superclass.constructor.call(this);
+
     this.genreNames = ['sci-fi', 'scifi', 'science fiction'];
 };
 extend(ScifiCatalog, GenreCatalog);
-ScifiCatalog.prototype._bookMatchesCriteria = function(book){
-    var genres = bool.getGenres();
-    if(book.getTitle().match(/space/i)){
-        return true;
-    }
-    for(var i = 0, len = genres.length; i < len; i++){
-        var genre = genres[i].toLowerCase();
-        if(this.genreNames.indexOf(genre) != -1){
-            return true;
-        }
-    }
-    return false;
-};
 
-
-
-//Instantiate the catalogs.
-var biographyCatalog = new BiographyCatalog();
-var fantasyCatalog = new FantasyCatalog();
-var mysteryCatalog = new MysteryCatalog();
-var nonFictionCatalog = new NonFictionCatalog();
-var scifiCatalog = new ScifiCatalog();

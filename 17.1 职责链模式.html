@@ -5,6 +5,8 @@
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <title>职责链的结构</title>
 
+    <script type="text/javascript" src="Interface.js"></script>
+    <script type="text/javascript" src="17.1 职责链模式.js"></script>
 </head>
     <body>
         <div>
@@ -37,8 +39,36 @@
     </body>
 
     <script type="text/javascript">
-      var genreNames = ['sci-fi', 'scifi', 'science fiction'];
-      var genre = 'sci-fi';
-      console.log(genreNames.indexOf('sdfs'));
+      var catalogs = [
+        'biography', 'bio',
+        'fantasy', 'fan',
+        'my-stery', 'mystery',
+        'non-fiction', 'nonfiction', 'non-fic',
+        'sci-fi', 'scifi', 'science fiction'
+      ];
+
+      var books = [];
+      for(var i = 0; i < 50; i++){
+        books.push(new Book('book' + i, 'title' + i, 'author' + i, [catalogs[i%12]]));
+      }
+      console.log(books);
+
+      //Instantiate the catalogs.
+      var biographyCatalog = new BiographyCatalog();
+      var fantasyCatalog = new FantasyCatalog();
+      biographyCatalog.setSuccessor(fantasyCatalog);
+      var mysteryCatalog = new MysteryCatalog();
+      fantasyCatalog.setSuccessor(mysteryCatalog);
+      
+      var nonFictionCatalog = new NonFictionCatalog();
+      mysteryCatalog.setSuccessor(nonFictionCatalog);
+
+      var scifiCatalog = new ScifiCatalog();
+      nonFictionCatalog.setSuccessor(scifiCatalog);
+      
+      var publicLibrary = new PublicLibrary(books, biographyCatalog);
+      debugger;
+
+      console.log(publicLibrary.findBooks('title1', ['biography']));
     </script>
 </html>
