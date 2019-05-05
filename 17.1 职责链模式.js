@@ -168,6 +168,7 @@ GenreCatalog.prototype = {
                 }
             }
         }
+        debugger;
         //continue to pass the request down the chain if the successor is set.
         if(this.successor){
             return this.successor.findBooks(request);

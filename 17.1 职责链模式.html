@@ -56,7 +56,9 @@
       //Instantiate the catalogs.
       var biographyCatalog = new BiographyCatalog();
       var fantasyCatalog = new FantasyCatalog();
+      debugger;
       biographyCatalog.setSuccessor(fantasyCatalog);
+
       var mysteryCatalog = new MysteryCatalog();
       fantasyCatalog.setSuccessor(mysteryCatalog);
       
@@ -69,6 +71,6 @@
       var publicLibrary = new PublicLibrary(books, biographyCatalog);
       debugger;
 
-      console.log(publicLibrary.findBooks('title1', ['biography']));
+      console.log(publicLibrary.findBooks('title1', ['biography', 'fan']));
     </script>
 </html>
