@@ -38,7 +38,7 @@ Book.prototype = {
 /* PublicLibrary class.*/
 var PublicLibrary = function(books, firstGenreCatalog){//implements Library
     this.catalog = {};
-
+    
     this.firstGenreCatalog = firstGenreCatalog;
 
     // this.biographyCatalog = new BiographyCatalog();
@@ -105,6 +105,11 @@ PublicLibrary.prototype = {
         // this.nonFictionCatalog.handleFilingRequest(newBook);
         // this.scifiCatalog.handleFilingRequest(newBook);
         this.firstGenreCatalog.handleFilingRequest(newBook);
+    },
+    addBooks: function(books){
+        for(var i = 0, len = books.length; i < len; i++){
+            this.addBook(books[i]);
+        }
     }
 };
 
@@ -168,7 +173,6 @@ GenreCatalog.prototype = {
                 }
             }
         }
-        debugger;
         //continue to pass the request down the chain if the successor is set.
         if(this.successor){
             return this.successor.findBooks(request);
