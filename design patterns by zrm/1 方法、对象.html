@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>Untitled</title>
+    <script type="text/javascript">
+        //直接调用
+        Function.prototype.addMethod1 = function(name, fn){
+            this[name] = fn;
+            return this;
+        };
+
+        //类式调用
+        Function.prototype.addMethod2 = function(name, fn){
+            this.prototype[name] =fn;
+            return this;
+        };
+
+        var method1 = function(){};
+        method1.addMethod1('checkName', function(){
+            //验证用户名
+            console.log('addMethod1: checkName');
+            return this;
+        }).addMethod1('checkEmail', function(){
+            //验证邮箱
+            console.log('addMethod1: checkEmail');
+            return this;
+        });
+        method1.checkName().checkEmail();
+//------------------------------------------------------
+        var Method2 = function(){};
+        Method2.addMethod2('checkName', function(){
+            //验证用户名
+            console.log('addMethod2: checkName');
+            return this;
+        }).addMethod2('checkEmail', function(){
+            //验证邮箱
+            console.log('addMethod2: checkEmail');
+            return this;
+        });
+        var m2 = new Method2();
+        m2.checkName().checkEmail();
+
+    </script>
+</head>
+
+    <body>
+
+
+    </body>
+</html>

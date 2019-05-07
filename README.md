@@ -1,1 +1,1 @@
-# js-design-patterns
+# js-design-patterns by Ross Harmes and Dustin Diaz
