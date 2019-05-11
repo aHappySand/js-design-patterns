@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>建造者模式</title>
+  </head>
+
+    <body>
+        <div>
+           建造者模式（Builder）：将一个复杂对象的构建层与其表示层相互分离，同样的构建过程可采用不同的表示。
+        </div>
+    </body>
+
+    <script type="text/javascript">
+      var Human = function(param){
+        //技能
+        this.skill = param && param.skill || '保密';
+        this.hobby = param && param.hobby || '保密';
+      };
+
+      Human.prototype = {
+        getSkill: function(){
+          return this.skill;
+        },
+        getHobby: function(){
+          return this.hobby;
+        }
+      };
+
+      //实例化姓名类
+      var Named = function(name){
+        var that = this;
+        //构造函数解析姓名的姓和名
+        (function(name, that){
+          that.wholename = name;
+          var idexOf = name.indexOf(' ');
+          if(idexOf > -1){
+            that.firstName = name.splice(0, idexOf);
+            that.secondName = name.splice(idexOf);
+          }
+        })(name, that);
+      };
+
+      var Work = function(work){
+        var that = this;
+        //构造函数中通过传入的职位特征来设置相应职位及描述
+        (function(work, that){
+          switch(work){
+            case 'code':
+              that.work = '工程师';
+              that.workDescript = '每天沉醉于编程';
+            case 'UI':
+            case 'UE':
+              that.work = '设计师';
+              that.workDescript = '设计更是一种艺术';
+            default:
+              that.work = work;
+              that.workDescript = '对不起，我们还不清楚该职位';
+          }
+        })(work, that);
+      };
+      Work.prototype.changeWork = function(work){
+        this.work = work;
+      };
+      Work.prototype.changeDescript = function(desc){
+        this.workDescript = desc;
+      };
+
+      /**
+       * 应聘者，建造者
+       *
+       */
+       var Person = function(name, work){
+        var _person = new Human();
+        _person.name = new Named(name);
+        _person.work = new Work(work);
+        return _person;
+       };
+
+    </script>
+</html>
