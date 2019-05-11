@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>工厂方法模式</title>
+  </head>
+
+    <body>
+        <div>
+          工厂方法模式：将实际创建对象工作推迟到子类当中，这样核心类就成了抽象类。
+        </div>
+    </body>
+
+    <script type="text/javascript" title="安全模式">
+       ///非安全模式
+       var Demo1 = function(){
+        
+       };
+       Demo1.prototype = {
+        show: function(){
+          console.log("成功获取！");
+        }
+      };
+
+       var d1 = new Demo1();
+       d1.show();
+       var d2 = Demo1();//非Demo1对象
+       // d2.show();//undefined
+
+       //安全模式
+       var Demo2 = function(){
+        if(!(this instanceof Demo2)){
+          return new Demo2();
+        }
+       };
+       Demo2.prototype = {
+          show: function(){
+            console.log("new show");
+          }
+        };
+       var d3 = Demo2();
+       d3.show();
+    </script>
+    
+    <script type="text/javascript" title="安全的工厂方法">
+      var Factory = function(type, content){
+        var s;
+        if(this instanceof Factory){
+          s = new this[type](content);
+        }else{
+          s = new Factory(type, content);
+        }
+        return s;
+      };
+
+      Factory.prototype = {
+        Java: function(content){
+
+        },
+        JavaScript: function(){},
+        UI: function(content){
+          this.content = content;
+          (function(content){
+            var div = document.createElement('div');
+            div.innerHTML = content;
+            div.style.border = '1px solid red';
+            document.getElementById('containes').appendChild(div);
+          })();
+        }
+      };
+    </script>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>简单工厂模式</title>
+  </head>
+
+    <body>
+        <div>
+          简单工厂模式（Simple Factory）：又叫静态工厂方法，由一个工厂对象决定创建某一种产品对象类的实例。主要用来创建同一类对象。
+        </div>
+    </body>
+
+    <script type="text/javascript">
+      //篮球基类
+      var Basketball = function(){
+        this.intro = '篮球盛行于美国';
+      };
+      Basketball.prototype = {
+        getMember: function(){
+          console.log('每个队伍需要5名队员');
+        },
+        getBallSize: function(){
+          console.log("篮球很大");
+        }
+      };
+
+
+      var Football = function(){
+        this.intro = "足球在世界范围内很流行。";
+      };
+      Football.prototype = {
+        getMember: function(){
+          console.log("每个队伍需要11名队员");
+        },
+        getBallSize: function(){
+          console.log("足球要小些。");
+        }
+      };
+
+      //运动工厂
+      var SportsFactory = function(name){
+        //通过实例化对象创建
+        switch(name){
+          case "NBA":
+            return new Basketball();
+          case "wordCup":
+            return new Football();
+        }
+      };
+
+      var ftb = SportsFactory("wordCup");
+      console.log(ftb);
+      console.log(ftb.intro);
+      ftb.getMember();
+
+    </script>
+
+    <script type="text/javascript">
+      //工厂模式
+      function createPop(type, text){
+        var o = new Object;
+        o.show = function(){
+          //显示
+        };
+
+        if(type == 'alert'){
+          o.alert = function(){
+
+          };
+        }
+
+        if(type == 'prompt'){
+          o.prompt = function(){
+
+          };
+        }
+
+        return o;
+      }
+    </script>
+</html>
