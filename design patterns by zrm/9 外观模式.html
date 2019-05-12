@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>外观模式</title>
+  </head>
+
+    <body>
+        <div>
+          外观模式（Facade）:为一组复杂的子系统接口提供一个更高级的统一接口，通过这个接口使得
+          对子系统接口的访问更容易。
+        </div>
+        <div>
+          document.onclick=...；onclick是DOM 0级事件。<br/>
+          addEventListener或attacheEvent(<IE9)是DOM 2级事件。
+        </div>
+    </body>
+    <script type="text/javascript">
+      function addEvent(dom, type, fn){
+        if(dom.addEventListener){
+          dom.addEventListener(type, fn, false);
+        }else if(dom.attachEvent){
+          dom.attachEvent('on' + type, fn);
+        }else{
+          dom['on' + type] = fn;
+        }
+      }
+
+      var getEvent = function(event){
+        return event || window.event;
+      };
+      var getElemnt = function(event){
+        event = getEvent(event);
+        return event.target || event.srcElement;
+      };
+      //阻止默认行为。
+      var preventDefault = function(event){
+        event = getEvent(event);
+        if(event.preventDefault){
+          event.preventDefault();
+        }else{
+          event.returnValue = false;
+        }
+      }
+    </script>
+</html>
