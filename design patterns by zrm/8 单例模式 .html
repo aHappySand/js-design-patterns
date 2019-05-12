@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>单例模式</title>
+  </head>
+
+    <body>
+        <div>
+
+        </div>
+    </body>
+    <script type="text/javascript" title="命名空间">
+      var study = {
+        Util: {
+
+        },
+        Tool: {
+
+        },
+        Ajax: {
+
+        }
+      };
+    </script>
+
+    <script type="text/javascript" title="无法修改的静态变量">
+      var Conf = (function(){
+        //私有变量
+        var _conf = {
+          MAX_NUM: 100,
+          MIN_NUM: 1,
+          COUNT: 1000
+        };
+        return {
+          get: function(name){
+            return _conf[name] || null;
+          }
+        };
+      })();
+
+      console.log(Conf.get('ss'));
+      console.log(Conf.get('MAX_NUM'));
+
+    </script>
+
+    <script type="text/javascript" title="惰性单例">
+       var LazySingle = (function(){
+        var isntance = null;
+        var count = 0;
+        function Single(){
+          count++;
+          return {
+            publicMethod: function(){},
+            publicProperty: '1.0',
+            getCount: function(){return count;}
+          };
+        }
+
+        return function(){
+          if(!isntance){
+            isntance = Single();
+          }
+          return isntance;
+        };
+       })();
+
+       console.log(LazySingle().getCount());//1
+       console.log(LazySingle().getCount());//1
+       console.log(LazySingle().getCount());//1
+
+    </script>
+</html>
