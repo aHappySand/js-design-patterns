@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>享元模式</title>
+
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+  </head>
+
+  <body>
+    <div>
+      享元模式（Flyweight）：运用共享技术有效地支持大量的细粒度的对象，避免对象间拥有相同内容造成多余的开销。
+    </div>
+    <div id="container">
+    </div>
+    <div>
+      <input type="button" name="" value="下一页" id="next_page">
+    </div>
+
+    <script type="text/javascript">
+      var Flyweight = (function(){
+        var created = [];
+        function create(){
+          var dom = document.createElement('div');
+          document.getElementById('container').appendChild(dom);
+          created.push(dom);
+          return dom;
+        }
+
+        return {
+          getDiv: function(){
+            if(created.length < 5){
+              return create();
+            }else{
+              var div = created.shift();
+              created.push(div);
+              return div;
+            }
+          }
+        };
+      })();
+
+      var article = [];
+      for(var i = 0; i < 8; i++){
+        article.push('第' + (i+1) + '条新闻');
+      }
+      var paper = 0, 
+        num = 5,
+        len = article.length;
+      for(var i = 0; i < 5; i++){
+        if(article[i]){
+          Flyweight.getDiv().innerHTML = article[i];
+        }
+      }
+
+      function nextPage(){
+        if(article.length < 5){
+          return;
+        }
+        var n = ++paper * num % len,//获取当前页的第一条
+          j = 0;
+        //插入5条新闻
+        for(;j < 5; j++){
+          if(article[n + j]){
+            Flyweight.getDiv().innerHTML = article[n + j];
+          }else if(article[n + j - len]){
+            Flyweight.getDiv().innerHTML = article[n + j - len];
+          }
+        }
+      }
+
+      document.getElementById('next_page').onclick=function(){
+        nextPage();
+      };
+    </script>
+
+    <script type="text/javascript" title="享元动作">
+      var ActionFlyWeight = {
+        moveX: function(x){
+          this.x = x;
+        },
+        moveY: function(y){
+          this.y = y;
+        }
+      };
+
+      var Player = function(x, y, c){
+        this.x = x;
+        this.y = y;
+        this.color = c;
+      };
+      Player.prototype = ActionFlyWeight;
+      Player.prototype.changeC = function(c){
+        this.color = c;
+      }
+
+      var Spirit = function(x, y, r){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+      };
+      Player.prototype = ActionFlyWeight;
+      Player.prototype.changeR = function(r){
+        this.r = r;
+      }
+
+
+      var player1 = new Player(4, 6, 'red');
+      console.log(player1);
+
+      player1.moveX(6);
+      player1.moveY(10);
+      player1.changeC('pink');
+      console.log(player1);
+
+
+      var spirit1 = new Spirit(4, 6, 3);
+      console.log(spirit1);
+
+      spirit1.moveX(6);
+      spirit1.moveY(10);
+      spirit1.changeR(8);
+      console.log(spirit1);
+    </script>
+  </body>
+</html>
