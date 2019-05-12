@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>代理模式</title>
+
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+  </head>
+
+    <body>
+        <div>
+          代理模式（Proxy）：由于一个对象不能直接引用另一个对象，所以需要通过代理对象在这两个对象之间起到中介的作用。
+        </div>
+        <div>
+          跨域：同一域名，不同的端口号；同一域名不同协议；域名与域名对应的IP；主域与子域；子域与子域；
+        </div>
+      <div>加载图片可以使用代理，先加载预览图片，点击再加载原图片</div>
+    <script type="text/javascript" title="站长统计">
+      //站长统计类似于img的get请求
+      var Count = (function(){
+        var img = new Image();
+        return function(param){
+          var src = "http://www.count.com/a.gif?";
+          for(var k in param){
+            src += k + '=' + param[k] + '&';
+          }
+          src = src.replace(/&$/, '');
+          //发送统计请求
+          img.src = src;
+        };
+      })();
+    </script>
+
+    <script type="text/javascript" title="JSONP">
+      //通过script标签，在src指向的url上面添加一些字段信息，然后服务器端获取这些字段，再相应的生成一份内容。
+      //回调函数，打印出请求数据和响应数据
+      function jsonCallback(res, req){
+        console.log(res);
+        console.log(req);
+      }
+    </script>
+
+    <!-- <script type="text/javascript" src="http://localhost:400/test/jsonp.php?callback=jsonCallback&data=getJsonPData"></script> -->
+
+    <script type="text/javascript" title="代理模板">
+      function callback(data){
+        console.log('成功接收数据', data);
+      }
+    </script>
+    <iframe src="" name="proxyIframe" id="proxyIframe">
+        这个不是跨域
+    </iframe>
+
+    <form action="http://localhost:400/test/proxy.php" method="post" target="proxyIframe">
+      <input type="text" name="callback" value="callback">
+      <input type="text" name="proxy" value="http://localhost:1112/test/proxy.html">
+      <input type="submit" name="" value="提交">
+    </form>
+  </body>
+</html>
