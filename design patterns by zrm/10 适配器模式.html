@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>适配器模式</title>
+
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+  </head>
+
+    <body>
+        <div>
+          适配器模式（Adapter）：将一个类（对象）的接口（方法或属性）转化为另外一个接口，以满足用户需求，使类（对象）之间接口的不兼容问题通过适配器得以解决。
+        </div>
+        <div>
+        </div>
+    </body>
+    <script type="text/javascript" title="适配异类框架">
+      var A = A || {};
+      A.g = function(id){
+        return document.getElementById(id);
+      };
+      A.on = function(id, type, fn){
+        var dom = typeof id === 'string' ? this.g(id) : id;
+        if(dom.addEventListener){
+          dom.addEventListener(type, fn,  false);
+        }else if(dom.attachEvent){
+          dom.attachEvent('on' + type, fn);
+        }else{
+          dom['on' + type] = fn;
+        }
+      }
+
+    </script>
+
+    <script type="text/javascript" title="适配器">
+      
+      A.g = function(id){
+        return $(id).get(0);
+      }
+      A.on = function(id, type, fn){
+        $(id).on(type, fn);
+      }
+    </script>
+
+    <script type="text/javascript" title="参数适配器">
+      function doSomething(obj){
+        var _adapter = {
+          name: '渔业清河',
+          title:'设计模式',
+          age: 23,
+          color: 'pink'
+        };
+        if(obj){
+          for(var i in _adapter){
+            _adapter[i] = typeof obj[i] != 'undefined' ? obj[i] : _adapter[i];
+          }
+        }
+        
+        console.log(_adapter);
+      }
+
+      doSomething();
+      doSomething({age: 0});
+      
+    </script>
+
+    <script type="text/javascript" title="数据适配">
+      var arr = ["javascript", 'book', '前端编程语言'];
+      function arrToObjAdapter(arr){
+        return {
+          name: arr[0],
+          'type': arr[1],
+          title: arr[2]
+        }
+      }
+    </script>
+
+    <script type="text/javascript" title="服务器端数据适配">
+      function ajaxDataAdapter(data){
+        return [data["key1"], data["key2"]];
+      }
+
+      $.ajax({
+        'url': 'some.php',
+        'success': function(data, status){
+          if(data){
+            doSomething(ajaxDataAdapter(data));
+          }
+        }
+      });
+    </script>
+</html>
