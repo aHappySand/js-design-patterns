@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>装饰者模式</title>
+
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+  </head>
+
+  <body>
+    <div>
+      装饰者模式（Decorator）：在不改变原对象的基础上，通过对其进行包装扩展（添加属性或方法），使原有对象可以满足用户的更复杂需求。
+    </div>
+    <div>
+      <input type="text" id="tel_input" name=""><span id="tel_input_warn" style="display: none;">帮助说明</span><span id="tel_input_tip">可以这样？</span>
+    </div>
+
+    <script type="text/javascript">
+      var telInput = document.getElementById('tel_input');
+      var telWarn = document.getElementById('tel_input_warn');
+      telInput.onclick = function(){
+        telWarn.style.display = 'inline-block';
+      }
+    </script>
+
+    <script type="text/javascript">
+      var decorator = function(input, fn){
+        var input = document.getElementById(input);
+        //提前做其他事情
+        if(typeof input.onclick === 'function'){
+          var oldClick = input.onclick;
+          input.onclick = function(){
+            oldClick();
+            fn();
+          };
+        }else{
+          input.onclick = fn;
+        }
+        //还可以做其他事情
+      }
+
+
+      decorator('tel_input', function(){
+        document.getElementById('tel_input_tip').style.display = 'none';
+      });
+    </script>
+  </body>
+</html>
