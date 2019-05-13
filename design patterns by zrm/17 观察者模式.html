@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>观察者模式</title>
+
+  </head>
+
+  <body>
+    <div>
+      观察者模式（Observer）：又被称为发布-订阅者模式或者消息机制，定义了一种依赖关系，解决了主体对象与观察者之间功能的耦合。
+    </div>
+    <div id="container">
+      最新发布的一条消息（评论：<span id="msg_num">0</span>）
+      <ul id="msg">
+        
+      </ul>
+      <textarea type="text" id="user_input" name=""></textarea>
+      <input type="button" value="提交" name="" id="user_submit">
+    </div>
+    <div>
+    </div>
+
+    <script type="text/javascript" title="观察者">
+      var Observer = (function(){
+        var __messages = {};
+        return {
+          //注册消息接口
+          regist: function(type, fn){
+            if(typeof __messages[type] === 'undefined'){
+              __messages[type] = [fn];
+            }else{
+              __messages[type].push(fn);
+            }
+            return this;
+          },
+          //发布消息接口
+          fire: function(type, args){
+            if(!__messages[type])
+              return;
+            var events = {
+              type: type,
+              args: args || {}
+            },
+            i = 0,
+            len = __messages[type].length;
+            for(; i < len; i++){
+              __messages[type][i].call(this, events);
+            }
+            return this;
+          },
+          //移除消息接口
+          remove: function(type, fn){
+            if(__messages[type] instanceof Array){
+              //从最后一个消息动作遍历
+              var i = __messages[type].length - 1;
+              for(; i >= 0; i--){
+                __messages[type][i] === fn && __messages[type].splice(i, 1);
+              }
+            }
+            return this;
+          }
+        };
+      })();
+
+      //测试 
+      Observer.regist('test', function(e){
+        console.log(e.type, e.args.msg);
+      });
+
+      Observer.fire('test', {msg: '传递参数'});
+    </script>
+
+    <script type="text/javascript">
+      function $(id){
+        return document.getElementById(id);
+      }
+
+      //工程师A
+      (function(){
+        //追加消息
+        function addMsgItem(e){
+          var text = e.args.text,
+            ul = $('msg'),//留言容器元素
+            li = document.createElement('li'),//创建内容元素
+            span = document.createElement('span');//删除按钮
+          li.innerHTML = text;
+          span.innerHTML = "删除";
+          span.onclick = function(){
+            ul.removeChild(li);
+            Observer.fire("removeCommentMessage", {
+              num: -1
+            })
+          };
+
+          li.appendChild(span);
+          ul.appendChild(li);
+        }
+
+        //注册添加评论信息
+        Observer.regist('addCommentMessage', addMsgItem);
+      })();
+
+      //工程师B
+      (function(){
+        function changeMsgNum(e){
+          var num = e.args.num;
+          $('msg_num').innerHTML = parseInt($('msg_num').innerHTML) + num;
+        }
+
+        Observer.regist('addCommentMessage', changeMsgNum).
+        regist('removeCommentMessage', changeMsgNum);
+      })();
+
+      //工程师C
+      (function(){
+        $('user_submit').onclick = function(){
+          //获取用户输入框中的值
+          var text = $('user_input');
+          if(text.value === ''){
+            return;
+          }
+
+          Observer.fire('addCommentMessage', {
+            text: text.value,
+            num: 1
+          });
+          text.value = '';
+        };
+      })();
+    </script>
+
+    <script type="text/javascript" title="对象间解耦">
+      var Student = function(result){
+        var that = this;
+        that.result = result;
+        that.say = function(){
+          console.log(that.result);
+        };
+      };
+
+      Student.prototype.answer = function(question){
+        Observer.regist(question, this.say);
+      };
+
+      Student.prototype.sleep = function(question){
+        console.log(this.result + ' ' + question + ' 已被注销');
+        Observer.remove(question, this.say);
+      };
+
+      var Tearcher = function(){};
+      Tearcher.prototype.ask = function(question){
+        console.log('问题是：' + question);
+        Observer.fire(question);
+      }
+
+      var student1 = new Student('学生1回答问题：'),
+        student2 = new Student('学生2回答问题：'),
+        student3 = new Student('学生3回答问题：');
+
+      student1.answer('什么是设计模式');
+      student1.answer('简述观察者模式');
+
+      student2.answer('什么是设计模式');
+      student2.answer('简述观察者模式');
+      
+      student3.answer('什么是设计模式');
+      student3.answer('简述观察者模式');
+
+      var teacher = new Tearcher();
+      teacher.ask('什么是设计模式');
+      teacher.ask('简述观察者模式');
+      //这个有点不符合实际，哪儿有先回答问题，老师再提问的
+    </script>
+
+  </body>
+</html>
