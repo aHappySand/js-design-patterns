@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>模板方法模式</title>
+
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <style type="text/css">
+      a{
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      模板方法模式（Template Method）：父类中定义一组操作算法骨架，而将一些实现步骤延迟到子类中，使得子类可以不改变父类的算法结构的同时可重新定义算法中某些实现步骤。
+    </div>
+    <div id="container">
+    </div>
+    <div>
+      <input type="button" name="" value="下一页" id="next_page">
+    </div>
+
+  </body>
+
+  <script type="text/javascript" title="提示框">
+    var Alert = function(data){
+      if(!data){
+        return ;
+      }
+
+      this.content = data.content;
+      //创建提示框面板
+      this.panel = document.createElement('div');
+      //创建提示内容组件
+      this.contentNode = document.createElement('p');
+      //创建确定按钮组件
+      this.confirmBtn = document.createElement('span');
+      //关闭按钮组件
+      this.closeBtn = document.createElement('b');
+      //提示框面板加类
+      this.panel.className = 'alert';
+      this.closeBtn.className = 'a-close';
+      this.confirmBtn.className = 'a-confirm';
+      this.confirmBtn.innerHTML = data.confirm || '确认';
+      this.contentNode.innerHTML = this.content;
+      //确定按钮执行的方法
+      this.success = data.success || function(){};
+      //关闭按钮执行的方法
+      this.close = data.close || function(){}
+    };
+
+    Alert.prototype = {
+      init: function(){
+        this.panel.appendChild(this.closeBtn);
+        this.panel.appendChild(this.contentNode);
+        this.panel.appendChild(this.confirmBtn);
+
+        document.body.appendChild(this.panel);
+        this.bindEvent();
+        this.show();
+      },
+      bindEvent: function(){
+        var me = this;
+        this.closeBtn.onclick = function(){
+          me.close();
+          me.hide();
+        };
+
+        this.confirmBtn.onclick = function(){
+          me.success();
+          me.hide();
+        };
+      },
+      hide: function(){
+        this.panel.style.display = 'none';
+      },
+      show: function(){
+        this.panel.style.display = 'block';
+      }
+    };
+
+    //右侧按钮提示框
+    var RightAlert = function(data){
+      Alert.call(this, data);
+      this.confirmBtn.className = this.confirmBtn.className + ' right';
+    };
+    RightAlert.prototype = new Alert();
+
+    //标题提示框
+    var TitleAlert = function(data){
+      Alert.call(this, data);
+      this.title = data.title;
+      this.titleNode = document.createElement('h3');
+      this.titleNode.innerHTML = this.title;
+    };
+    TitleAlert.prototype = new Alert();
+    TitleAlert.prototype.init = function(){
+      this.panel.insertBefore(this.titleNode, this.panel.firstChild);
+      Alert.prototype.init.call(this);
+    }
+
+
+    new TitleAlert({
+      title: '提示标题',
+      content: '提示内容',
+      success: function(){
+        console.log('ok');
+      },
+      close: function(){
+        console.log('close');
+      }
+    }).init();
+  </script>
+
+  <script type="text/javascript" title="导航">
+    function formatStr(str, data){
+      return str.replace(/\{#(\w+)#\}/g, function(match, key){
+        return typeof data[key] === undefined ? '' : data[key];
+      });
+    }
+    //基础导航
+    var Nav = function(data){
+      //基础导航样式模板
+      this.item = '<a href="{#href#}" title="{#title#}">{#name#}</a>';
+      this.html = '';
+      for(var i = 0, len = data.length; i < len; i++){
+        this.html += formatStr(this.item, data[i]);
+      }
+      return this.html;
+    };
+
+    //带有消息提示信息的导航
+    var NumNav = function(data){
+      var tpl = '<b>{#num#}</b>';
+      for(var i = data.length -1; i >= 0; i--){
+        data[i].name = data[i].name + formatStr(tpl, data[i]);
+      }
+      return Nav.call(this, data);
+    }
+
+    var LinkNav = function(data){
+      var tpl = '<span>{#link#}</span>';
+      for(var i = data.length - 1; i >= 0; i-- ){
+        data[i].name = data[i].name + formatStr(tpl, data[i]);
+      }
+      return Nav.call(this, data);
+    };
+
+    var nav = document.getElementById('container');
+    nav.innerHTML = NumNav([
+      {
+        href: 'http://www.baidu.com/',
+        title: '百度一下，你就知道',
+        name: '百度',
+        num: '10'
+      },
+      {
+        href: 'http://www.taobao.com/',
+        title: '淘宝商城',
+        name: '淘宝',
+        num: '2'
+      },
+      {
+        href: 'http://www.qq.com/',
+        title: '腾讯QQ首页',
+        name: 'QQ',
+        num: '4'
+      }
+    ]);
+  </script>
+</html>
