@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <title>中介者模式</title>
+    </head>
+
+    <body>
+        <div>
+            中介者模式（Mediator）：通过中介者对象封装一系列对象之间的交互，使对象之间不再
+            相互引用，降低他们之间的耦合。
+        </div>
+        <div>
+            <div id="collection_nav"><b>百度</b><span>www.baidu.com</span></div>
+            <div id="recommend_nav"><b>谷歌</b><span>www.google.com</span></div>
+        </div>
+        <div>
+            <input type="checkbox" name="" id="hide_num">显示/隐藏导航
+            <input type="checkbox" name="" id="hide_url">显示/隐藏网址
+        </div>
+        <script type="text/javascript" title="创建中介者对象">
+            var Mediator = (function(){
+                //消息对象
+                var _msg = {};
+
+                return {
+                    /***
+                     * 订阅消息方法
+                     * @param type 消息名称
+                     * @param action 消息回调函数
+                     */
+                     register: function(type, action){
+                        if(!_msg[type]){
+                            _msg[type] = [];
+                        }
+                        _msg[type].push(action);
+                     },
+                     /**
+                      * 发布消息方法
+                      *  @param type 消息名称
+                      */
+                      send: function(type){
+                        if(_msg[type]){
+                            for(var i = 0, len = _msg[type].length; i<len; i++){
+                                _msg[type][i] && _msg[type][i]();
+                            }
+                        }
+                      }
+                };
+            })();
+
+            /**
+             * 显隐导航小组件
+             * @param mod 模块
+             * @param tag 处理的标签（消息提醒，网址span）
+             * @param showOrHide 显示还是隐藏
+             */
+             var showHideNavWidget = function(mod, tag, showOrHide){
+                var mod = document.getElementById(mod),
+                    tags = mod.getElementsByTagName(tag),
+                    showOrHide = (!showOrHide || showOrHide === 'hide') ? 'hidden' : 'visible';
+
+                //占位隐藏这些标签
+                for(var i = tag.length -1; i >= 0; i--){
+                    for(var j = 0, len = tags.length; j < len; j++){
+                        tags[j].style.visibility = showOrHide;
+                    }
+                }
+
+             };
+
+             //用户收藏导航
+             (function(){
+                Mediator.register('hideAllNavNum', function(){
+                    showHideNavWidget('collection_nav', 'b', false);
+                });
+
+                Mediator.register('showAllNavNum', function(){
+                    showHideNavWidget('collection_nav', 'b', true);
+                });
+
+                Mediator.register('hideAllNavUrl', function(){
+                    showHideNavWidget('collection_nav', 'span', false);
+                });
+
+                Mediator.register('showAllNavUrl', function(){
+                    showHideNavWidget('collection_nav', 'span', true);
+                });
+             })();
+
+             //推荐用户导航
+             (function(){
+                Mediator.register('hideAllNavNum', function(){
+                    showHideNavWidget('recommend_nav', 'b', false);
+                });
+
+                Mediator.register('showAllNavNum', function(){
+                    showHideNavWidget('recommend_nav', 'b', true);
+                });
+
+                Mediator.register('hideAllNavUrl', function(){
+                    showHideNavWidget('recommend_nav', 'span', false);
+                });
+
+                Mediator.register('showAllNavUrl', function(){
+                    showHideNavWidget('recommend_nav', 'span', true);
+                });
+             })();
+
+
+             //设置层模块
+             (function(){
+                var hideNum = document.getElementById('hide_num'),
+                    hideUrl = document.getElementById('hide_url');
+                hideNum.onchange = function(){
+                    if(hideNum.checked){
+                        Mediator.send('hideAllNavNum');
+                    }else{
+                        Mediator.send('showAllNavNum');
+                    }
+                };
+
+                hideUrl.onchange = function(){
+                    if(hideUrl.checked){
+                        Mediator.send('hideAllNavUrl');
+                    }else{
+                        Mediator.send('showAllNavUrl');
+                    }
+                };
+             })();
+        </script>        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    </body>
+
+</html>
