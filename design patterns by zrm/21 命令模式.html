@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>命令模式（Command）</title>
+
+  </head>
+
+  <body>
+    <div>
+      命令模式（Command）：将请求与实现解耦并封装成独立对象，从而使不同的请求对客户端的实现参数化。
+    </div>
+    <div>
+      <div id="title"></div>
+      <div id="product"></div>
+      <div>
+        <canvas id="canvas" width="300" height="300" style="border: 1px solid #ccc;"></canvas>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var viewCommand = (function(){
+        var tpl = {
+          //展示图片结构模板
+          product: [
+            '<div>',
+              '<img src="{#src#}">',
+              '<p>{#text#}</p>',
+            '</div>'
+          ].join(''),
+          //展示标题结构模板
+          title: [
+            '<div class="title">',
+              '<div class="main">',
+                '<h2>{#title#}</h2>',
+                '<p>{#tips#}</p>',
+              '</div>',
+            '</div>'
+          ].join('')
+        };
+
+        //缓存字符串
+        var html = '';
+        //格式化字符串
+        function formatString(str, obj){
+          return str.replace(/\{#(\w+)#\}/g, function(match, key){
+            return obj[key];
+          });
+        }
+
+        var Action = {
+          //创建方法
+          create: function(data, view){
+            if(data.length){
+              for(var i=0, len = data.length; i < len; i++){
+                html += formatString(tpl[view], data[i]);
+              }
+            }else{
+              html += formatString(tpl[view], data);
+            }
+          },
+          //展示方法
+          display: function(container, data, view){
+            if(data){
+              this.create(data, view);
+            }
+            document.getElementById(container).innerHTML = html;
+            html = '';
+          }
+        };
+        return function(msg){
+          msg.param = Object.prototype.toString.call(msg.param) === "[object Array]" ? msg.param : [msg.param];
+          //Action 内部调用的方法引用this，所以此处为保证作用域this执行 传入Action
+          Action[msg.command].apply(Action, msg.param);
+        }
+      })();
+
+      var productData = [
+        {
+          src: 'command/01.jpg',
+          text: '绽放的桃花'
+        },
+        {
+          src: 'command/02.jpg',
+          text: '阳光下的温馨'
+        }
+      ],
+      titleData = {
+          title: '夏日里的一片温馨',
+          tips: '暖暖的温情'
+        }
+      ;
+
+      viewCommand({
+        command: 'display',
+        param: ['title', titleData, 'title']
+      });
+
+      viewCommand({
+        command: 'display',
+        param: ['product', productData, 'product']
+      });
+    </script>
+
+
+    <script type="text/javascript" src="21 绘图命令.js"></script>
+    <script type="text/javascript" title="绘图命令">
+      CanvasCommand.execute([
+        {command: 'fillStyle', param: 'red'},
+        {command: 'fillRect', param: [20, 20, 100, 100]}
+      ]);
+    </script>
+  </body>
+</html>
