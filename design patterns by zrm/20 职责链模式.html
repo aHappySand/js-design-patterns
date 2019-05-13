@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>职责链模式</title>
+
+  </head>
+
+  <body>
+    <div>
+      职责链模式（Chain of Responsibility）：解决请求的发送者与请求的接受者之间的耦合，通过职责链上的多个对象对分解请求流程，实现请求在多个对象之间的传递，直到最后一个对象完成请求的处理。
+    </div>
+    <div>
+      <input type="type" name="nickname"><span></span>
+      <input type="button" name="" value="验证">
+    </div>
+    这个职责链与我在Ross Harmes写的不一样，Ross Harmes写的类似于事件冒泡，而本章写的模块分类，方法调用。
+    <script type="text/javascript" title="请求模块">
+      /**
+       * 异步请求对象（简化）
+       * @param data 请求数据
+       * @param dealType 响应数据处理对象
+       * @param dom 事件源
+       */
+       var sendData = function(data, dealType, dom){
+        var xhr = new XHLHttpRequest(),
+          url = 'getData.php?mod=usreInfo';
+
+        xhr.onload= function(event){
+          if(xhr.status >= 200 && xhr.status < 300 || 
+            xhr.status == 304){
+            dealData(xhr.responseText, dealType, dom);
+          }else{
+
+          }
+        };
+        for(var i in data){
+          url += '&' + i + '=' + data[i];
+        }
+        xhr.open('get', url, true);
+        xhr.send(null);
+       };
+    </script>
+
+    <script type="text/javascript" title="响应数据适配模块">
+      /**
+       * 处理响应数据
+       * @param data 响应数据
+       * @param dealType 响应数据处理对象
+       * @param dom 事件源
+       *
+       */
+       var dealData = function(data, dealType, dom){
+        //对象toString方法简化引用
+        var dataType = Object.prototype.toString.call(data);
+        switch(dealType){
+          //输入框提示功能
+          case 'sug':
+            if(dataType === "[object Array]"){
+              return createSug(data, dom);
+              //将响应对象数据转化为数组
+            }else if(dataType === "[object Object]"){
+              var newData = [];
+              for(var i in data){
+                newData.push(data[i]);
+              }
+              return createSug(newData, dom);
+            }
+            return createSug([data], dom);
+          case 'validate':
+            return createValidateResult(data, dom);
+            break;
+        }
+       };
+    </script>
+
+    <script type="text/javascript" title="创建组件模块">
+      /**
+       * 创建提示框组件
+       * @param data  响应适配数据
+       * @param dom 事件源
+       */
+       var createSug = function(data, dom){
+        var i = 0,
+          len = data.length,
+          html = '';
+        for(;i < len; i++){
+          html += '<li>' + data[i] + '</li>';
+        }
+        dom.parentNode.getElementsByTagName('ul')[0].innerHTML = html;
+       }
+
+       /**
+        * 创建校验组件
+        * @param data 响应适配数据
+        * @param dom 事件源
+        */
+        var createValidateResult = function(data, dom){
+          dom.parentNode.getElementsByTagName('span')[0].innerHTML = data;
+        }
+    </script>
+  </body>
+</html>
