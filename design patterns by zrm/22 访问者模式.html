@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <title>访问者模式</title>
+    </head>
+
+    <body>
+        <div>
+            访问者模式（Visitor）：针对于对象结构中的元素，定义在不改变该对象的前提下访问结构中元素的新方法。
+        </div>
+        <div>
+            <input type="button" id="btn" value="点击" name="">
+            <span id="test"></span>
+        </div>
+        <script type="text/javascript">
+            /**
+             * @param data 为了向事件回调函数中传入自定义数据。
+             */
+            function bindIEEvent(dom, type, fn, data){
+                var data = data || {};
+                if(dom.addEventListener){
+                    dom.addEventListener(type, function(e){
+                        fn.call(dom, e, data);
+                    }, false);
+                }else if(dom.attachEvent){
+                    dom.attachEvent('on' + type, function(e){
+                        fn.call(dom, e, data);
+                    });    
+                }else{
+                    dom['on' + type]  = function(e){
+                        fn.call(dom, e, data);
+                    };                   
+                }
+            }
+
+            function $(id){
+                return document.getElementById(id);
+            }
+            bindIEEvent($('btn'), 'click', function(e, data){
+                $('test').innerHTML = e.type + data.text + this.tagName;
+            }, {text: 'test demo'});
+        </script>
+
+        <script type="text/javascript" title="对象访问器">
+            var Visitor = (function(){
+                return {
+                    //截取方法
+                    splice: function(){
+                        var args = Array.prototype.splice.call(arguments, 1);
+                        return Array.prototype.splice.apply(arguments[0], args);
+                    },
+                    push: function(){
+                        //强化类数组对象，使他拥有length属性
+                        var len = arguments[0].length || 0;
+                        var args = this.splice(arguments, 1);
+                        //校正length属性
+                        arguments[0].length = len + arguments.length - 1;
+                        return Array.prototype.push.apply(arguments[0], args);
+                    },
+                    pop: function(){
+                        return Array.prototype.pop.apply(arguments[0]);
+                    }
+                };
+            })();
+
+            var a = new Object();
+            console.log(a.length);
+
+            Visitor.push(a, 1, 2, 3, 4);
+            console.log(a.length);
+            
+            Visitor.push(a, 6, 9);
+            Visitor.pop(a);
+            console.log(a);//{0: 1, 1: 2, 2: 3, 3: 4, 4: 6, length: 5}
+
+            console.log(Visitor.splice(a, 2));//[3, 4, 6]
+            console.log(a);//{0: 1, 1: 2, length: 2}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </script>
+
+
+
+
+
+
+
+        
+    </body>
+
+</html>
