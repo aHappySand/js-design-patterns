@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>策略模式</title>
+
+  </head>
+
+  <body>
+    <div>
+      策略模式（Strategy）：将定义的一组算法封装起来，使其相互之间可以替换。封装的算法具有一定独立性，不会随客户端变化而变化。
+    </div>
+    <div>
+      <input type="type" name="nickname"><span></span>
+      <input type="button" name="" value="验证">
+    </div>
+
+    <script type="text/javascript" title="策略对象">
+      //价格策略对象
+      var PriceStrategy = function(){
+        var strategy = {
+          //100 返 30
+          return30: function(price){
+            //parseInt 可通过~~、|等运算符替换
+            //+price 转化为数字类型
+            return +price - parseInt(price / 100) * 30;
+          },
+          return50: function(price){
+            return +price - parseInt(price / 100) * 50;
+          },
+          percent90: function(price){
+            //javascript 在处理小数乘除法有bug，在运算前转化为整数
+            return price * 100 * 90 / 10000;
+          },
+          percent80: function(price){
+            //javascript 在处理小数乘除法有bug，在运算前转化为整数
+            return price * 100 * 80 / 10000;
+          },
+          percent50: function(price){
+            //javascript 在处理小数乘除法有bug，在运算前转化为整数
+            return price * 100 * 50 / 10000;
+          }
+        };
+
+        return function(algorithm, price){
+          return strategy[algorithm] && strategy[algorithm](price);
+        };
+      };
+
+      var price = PriceStrategy('return50', '314.5');
+      console.log(price);
+
+    </script>
+
+    <script type="text/javascript" title="表单验证">
+      var InputStrategy = (function(){
+        var strategy = {
+          notNull: function(value){
+            return /\s+/.test(value) ? '请输入内容' : '';
+          },
+          //是否为数字
+          number: function(value){
+            return /^[0-9]+(\.[0-9]+)?$/.test(value) ? '' : '请输入数字';
+          },
+          //是否为本地电话
+          phone: function(value){
+            return /^\d{3}\-\d{8}$|^\d{4}\-\d{7}$/.test(value) ? '' : '请输入正确的电话号码，如:010-12345678 或 0418-1234567';
+          }
+        };
+
+        return {
+          check: function(type, value){
+            //去除首尾空白符
+            value = value.replace(/^\s+|\s+$/g, '');
+            return strategy[type] ? strategy[type](value) : '没有该类型的检测方法';
+          },
+          //添加策略
+          addStrategy: function(type, fn){
+            strategy[type] = fn;
+          }
+        };
+      })();
+      //扩展 可以延伸算法
+      InputStrategy.addStrategy('nickname', function(value){
+        return /^[a-zA-Z]\w{3,7}$/.test(value) ? '' : '请输入4~8位昵称，如YYQH';
+      });
+
+      function $tag(tag, context){
+        context = context || document;
+        return context.getElementsByTagName(tag);
+      }
+
+      $tag('input')[1].onclick = function(){
+        var value = $tag('input')[0].value;
+        $tag('span')[0].innerHTML = InputStrategy.check('nickname', value);
+      };
+    </script>
+  </body>
+</html>
