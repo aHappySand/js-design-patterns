@@ -266,14 +266,77 @@
       };
     </script>
 
+    <script type="text/javascript" title="优化分支循环嵌套问题">
+      window.onload = function(){
+        var canvas = document.getElementsByTagName('canvas')[0],
+          img = document.images[0],
+          width = (canvas.width = img.width * 2) / 2,//获取并设置宽度
+          height = canvas.height = img.height,
+          ctx = canvas.getContext('2d');
 
+          ctx.drawImage(img, 0, 0);
 
+          /**
+           * 绘制特效图片
+           * @param t 特效类型
+           * @param x x坐标
+           * @param y y坐标
+           * @param w 宽度
+           * @param h 高度
+           * @param a 透明度
+           */
+          function dealImage(t, x, y, w, h, a){
+            //获取画布图片数据，这个地方会出错，放在服务器上就好了
+            var canvasData = ctx.getImageData(x, y, w, h);
+            //像素数据
+            var data = canvasData.data;
 
+            var Deal = (function(){
+              var method = {
+                'red': function(i){
+                  data[i + 1] = 0;
+                  data[i + 2] = 0;
+                  data[i + 3] = a;
+                },
+                'green': function(i){
+                  data[i] = 0;
+                  data[i + 2] = 0;
+                  data[i + 3] = a;
+                },
+                'blue': function(i){
+                  data[i] = 0;
+                  data[i + 1] = 0;
+                  data[i + 3] = a;
+                },
+                'gray': function(i){
+                  var num = parseInt((data[i] + data[i + 1] + data[i + 2]) / 3);
+                  data[i] = num;
+                  data[i + 1] = num;
+                  data[i + 2] = num;
+                  data[i + 3] = a;
+                }
+              };
+              return function(type){
+                return method[type] && method['gray'];
+              };
+            })();
 
+            function eachData(fn){
+              //遍历每组像素数据（4个数据表示一个像素点数据，分别代表红色、绿色、蓝色、透明度）
+              for(var i = 0, len = data.length;i < len; i+= 4){
+                fn(i);
+              }  
+            }
+            eachData(Deal(t));
+            ctx.putImageData(canvasData, width + x, y);
+          }
 
+          dealImage('gray', 0, 0, width, height, 255);
+          dealImage('gray', 100, 50, 300, 200, 100);
+          dealImage('gray', 150, 100, 200, 100, 255);
 
-
-
+      };
+    </script>
 
 
 
