@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>迭代器模式</title>
+  </head>
+  <body>
+    <div>
+      迭代器模式（Iterator）:在不暴露对象内部结构的同时，可以顺序地访问聚合对象内部的元素。
+    </div>
+    <div>
+      <ul id="container">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+      </ul>
+      <div><input type="button" value="上一个" name="" id="pre-btn"><input type="button" id="next-btn" value="下一个" name=""></div>
+    </div>
+
+
+    <div>
+      <img src="image/600.jpg">
+      <canvas></canvas>
+    </div>
+    <script type="text/javascript" title="迭代器">
+      var Iterator = function(items, container){
+        //获取父容器，若container参数存在，并且可以获取该元素则获取，否则获取document
+        var container = container && document.getElementById(container) || document,
+          //获取元素
+          items = container.getElementsByTagName(items),
+          //元素长度
+          length = items.length,
+          index = 0;
+          //缓存源生数组splice方法
+        var splice = [].splice;
+        return {
+          //获取第一个元素
+          first: function(){
+            index = 0;
+            return this.get(index);
+          },
+          last: function(){
+            index = length-1;
+            return this.get(index);
+          },
+          pre: function(){
+            if(--index > -1){
+              return this.get(index);
+            }else{
+              return this.last();
+            }
+          },
+          next: function(){
+            if(++index < length){
+              return this.get(index);
+            }else{
+              return this.first();
+            }
+          },
+          get: function(num){
+            //如果num大于等于0 正向获取，否则逆向获取
+            index = num >= 0 ? num % length : num % length + length;
+            return items[index];
+          },
+          //对每一个元素执行某一个方法
+          dealEach: function(fn){
+            var args = splice.call(arguments, 1);
+            for(var i = 0; i < length; i++){
+              fn.apply(items[i], args);
+            }
+          },
+          //对某一个元素执行某一个方法
+          dealItem: function(num, fn){
+            num = num === null ? index : num;
+            fn.apply(this.get(num), splice.call(arguments, 2));
+          },
+          //排他方式处理某一个元素
+          exclusive: function(num, allFn, numFn){
+            if(num === null){
+              num = index;
+            }
+            this.dealEach(allFn);
+            if(Object.prototype.toString.call(num) === "[object Array]"){
+              for(var i = 0, len = num.length; i<len; i++){
+                this.dealItem(num[i], numFn);
+              }
+            }else{
+              this.dealItem(num, numFn);
+            }
+          }
+        };
+      };
+    </script>
+
+    <script type="text/javascript">
+      var demo = new Iterator('li', 'container');
+      console.log(demo.first());
+      demo.dealItem(1, function(text, color){
+        this.innerHTML = text;
+        this.style.background = color;
+      }, 'test', 'red');
+
+      function deal(color){
+        demo.dealItem(null, function(color){
+          this.style.background = color;
+        }, color);
+      }
+
+      document.getElementById('pre-btn').onclick = function(){
+        deal('');
+        demo.pre();
+        deal('red');
+      };
+      document.getElementById('next-btn').onclick = function(){
+        deal('');
+        demo.next();
+        deal('red');
+      };
+    </script>
+
+    <script type="text/javascript" title="数组迭代器">
+      var eachArr = function(arr, fn){
+        var i = 0, len = arr.length;
+        for(;i < len; i++){
+          //依次执行回调函数
+          if(fn.call(arr[i], i, arr[i]) === false){
+            break;
+          }
+        }
+      }
+      var i = 0,arr = [];
+      for(; i < 5; arr[i++] = i);
+      eachArr(arr, function(i, data){
+        console.log(i, data);
+      });
+    </script>
+
+    <script type="text/javascript" title="对象迭代器">
+      var eachObj = function(obj, fn){
+        for(var i in obj){
+          if(fn.call(obj[i], i, obj[i]) === false){
+            break;
+          }
+        }
+      };
+    </script>
+
+    <script type="text/javascript" title="同步变量迭代器">
+      var A = {};
+      //var c = A.b.c
+      var c = A && A.b && A.b.c;
+      console.log(c);
+
+      A = {
+        common: {},
+        client: {
+          user: {
+            username: '冯伟',
+            uid: 123
+          }
+        }
+      };
+
+      var AGetter = function(key){
+        if(!A)
+          return undefined;
+
+        var result = A ,keys = key.split('.');
+        for(var i = 0, len = keys.length; i < len; i++){
+          if(result[keys[i]] !== undefined){
+            result = result[keys[i]];
+          }else{
+            return undefined;
+          }
+        }
+        return result;
+      }
+
+      console.log(AGetter('client.user.username'));
+      console.log(AGetter('client.user.local'));
+
+      var ASetter = function(key, value){
+        if(!A)
+          return false;
+        var result = A, keys = key.split('.');
+        for(var i = 0, len = keys.length; i < len; i++){
+          //如果第i层属性对应的值不存在，则定义为对象
+          if(result[keys[i]] === undefined){
+            result[keys[i]] = {};
+          }
+          if(!(result[keys[i]] instanceof Object)){
+            throw new Error('A.' + keys.splice(0,i + 1).join('.') + ' is not object');
+            return false;
+          }
+          result = result[keys[i]];
+        }
+        return result[key[i]] = value;
+      }
+
+      console.log(ASetter('client.module.news.sports', 'on'));
+      // console.log(ASetter('client.user.username.sports', 'on'));
+
+    </script>
+
+    <script type="text/javascript" title="分支循环嵌套问题">
+      window.onload = function(){
+        var canvas = document.getElementsByTagName('canvas')[0],
+          img = document.images[0],
+          width = (canvas.width = img.width * 2) / 2,//获取并设置宽度
+          height = canvas.height = img.height,
+          ctx = canvas.getContext('2d');
+
+          ctx.drawImage(img, 0, 0);
+
+          /**
+           * 绘制特效图片
+           * @param t 特效类型
+           * @param x x坐标
+           * @param y y坐标
+           * @param w 宽度
+           * @param h 高度
+           * @param a 透明度
+           */
+          function dealImage(t, x, y, w, h, a){
+            //获取画布图片数据，这个地方会出错，放在服务器上就好了
+            var canvasData = ctx.getImageData(x, y, w, h);
+            //像素数据
+            var data = canvasData.data;
+            //遍历每组像素数据（4个数据表示一个像素点数据，分别代表红色、绿色、蓝色、透明度）
+            for(var i = 0, len = data.length;i < len; i+= 4){
+              switch(t){
+                case 'red':
+                  data[i + 1] = 0;
+                  data[i + 2] = 0;
+                  data[i + 3] = a;
+                  break;
+                case 'green':
+                  data[i] = 0;
+                  data[i + 2] = 0;
+                  data[i + 3] = a;
+                  break;
+                case 'blue':
+                  data[i] = 0;
+                  data[i + 1] = 0;
+                  data[i + 3] = a;
+                  break;
+                case 'gray':
+                  var num = parseInt((data[i] + data[i + 1] + data[i + 2]) / 3);
+                  data[i] = num;
+                  data[i + 1] = num;
+                  data[i + 2] = num;
+                  data[i + 3] = a;
+                  break;
+              }
+            }
+            ctx.putImageData(canvasData, width + x, y);
+          }
+
+
+          dealImage('gray', 0, 0, width, height, 255);
+          dealImage('gray', 100, 50, 300, 200, 100);
+          dealImage('gray', 150, 100, 200, 100, 255);
+
+      };
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
