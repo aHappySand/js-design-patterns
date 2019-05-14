@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>迭代器模式</title>
+  </head>
+  <body>
+    <h2>s</h2>
+    <div></div>
+    <span></span>
+    <div></div>
+    <div>
+      解释器模式（Interpreter）：对于一种语言，给出其文法表示形式，并定义一种解释器，通过使用这种解释器来解释语言中定义的句子。
+    </div>
+    <div id="container">
+      <div>
+        <div>
+          <ul>
+            <li><span id="span1">1</span></li>
+            <li><span id="span2">2</span></li>
+            <li>3</li>
+            <li>4</li>
+          </ul>
+        </div>  
+      </div>
+      <div>
+        <input type="button" value="上一个" name="" id="pre-btn">
+        <div>
+          <ul>
+            <li><span id="span5"></span></li>
+            <li><span id="span6"></span></li>
+          </ul>
+        </div>
+        <input type="button" id="next-btn" value="下一个" name="">
+      </div>
+    </div>
+    
+    <script type="text/javascript">
+
+      //XPath解释器
+      var Interpreter = (function(){
+              //获取前面兄弟元素名称
+        function getSublingName(node){
+          if(node.previousSibling){
+            var name = '',//返回的兄弟元素名称 
+              count = 1, //紧邻兄弟元素中 相同名称字符串
+              nodeName = node.nodeName,//原始节点名称
+              sibling = node.previousSibling;//前一个兄弟元素
+            //存在前一个兄弟元素
+            while(sibling){
+              //如果节点为元素，并且节点类型与前一个兄弟元素类型相同，并且名称存在
+              if(sibling.nodeType == 1 && sibling.nodeType === node.nodeType && sibling.nodeName){
+                //节点名称相同
+                if(nodeName == sibling.nodeName){
+                  ++count;
+                }else{
+                  nodeName = sibling.nodeName;
+                  //追加新的节点
+                  name += (count == 1 ? '' : count) + '|' + sibling.nodeName.toUpperCase();
+                  count = 1;
+                }
+              }
+              sibling = sibling.previousSibling;
+            }
+            return name;
+          }else{//不存在兄弟元素
+            return '';
+          }
+        }
+
+        //参数1 node 目标节点，参数wrap 容器节点
+        return function(node, wrap){
+          var path = [],
+            wrap = wrap || document;
+          //如果当前 目标节点等于容器节点
+          if(node === wrap){
+            if(wrap.nodeType == 1){
+              path.push(wrap.nodeName.toUpperCase());
+            }
+            return path;
+          }
+          //如果当前节点的父节点不等于容器节点
+          if(node.parentNode !== wrap){
+            path = arguments.callee(node.parentNode, wrap);
+          }else{//如果当前节点的父元素节点与容器节点相等
+            if(wrap.nodeType == 1){
+              path.push(node.nodeName.toUpperCase());
+            }
+          }
+
+          // 获取前面兄弟元素名称
+          if(node.nodeType == 1){
+            var sublingName = getSublingName(node);
+            path.push(node.nodeName.toUpperCase() + sublingName);
+          }
+          return path;
+        };
+      })();
+    </script>  
+
+    <script type="text/javascript">
+      var path = Interpreter(document.getElementById('span6'), document.body);
+      console.log(path.join('>'));
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
