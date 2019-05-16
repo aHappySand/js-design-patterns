@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>迭代器模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+  </head>
+  <body>
+    <p>s</p>
+    <div>1</div>
+    <span>2</span>
+    <div>3</div>
+    <div>
+      链模式（Operate Of Responsibility）:通过在对象方法中将当期对象返回，实现对同一个对象多个方法的链式调用。从而简化对该对象的多个方法的多次调用时，对该对象的多次引用。
+    </div>
+    <div id="container">
+      <div>
+        <div>
+          <ul>
+            <li><span id="span1">1</span></li>
+            <li><span id="span2">2</span></li>
+            <li>3</li>
+            <li>4</li>
+          </ul>
+        </div>  
+      </div>
+      <div>
+        <input type="button" value="上一个" name="" id="pre-btn">
+        <div>
+          <ul>
+            <li><span id="span5"></span></li>
+            <li><span id="span6"></span></li>
+          </ul>
+        </div>
+        <input type="button" id="next-btn" value="下一个" name="">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var A = function(){
+        return A.fn;
+      };
+      A.fn = A.prototype = {
+        length: 2,
+        size: function(){
+          return this.length;
+        }
+      };
+
+      console.log(A().size());
+    </script>
+
+    <script type="text/javascript">
+      var B = function(selector){
+        return B.fn.init(selector);
+      };
+      B.fn = B.prototype = {
+        init: function(selector){
+          return document.getElementById(selector);
+        },
+        length: 2,
+        size: function(){
+          return this.length;
+        }
+      };
+      console.log(B('container'));
+    </script>
+
+    <script type="text/javascript">
+      var C = function(selector){
+        return C.fn.init(selector);
+      };
+      C.fn = C.prototype = {
+        init: function(selector){
+          this[0] = document.getElementById(selector);
+          this.length = 1;
+          console.log(this === C.fn, this === C.prototype, this);
+          return this;
+        },
+        length: 2,
+        size: function(){
+          return this.length;
+        }
+      };
+      var cdemo = C('container');
+      console.log(cdemo);
+      console.log(cdemo.size());
+
+      var c2 = C('span1');
+      console.log(cdemo);
+    </script>
+
+    <script type="text/javascript">
+      var D = function(selector){
+        return new D.fn.init(selector);
+      };
+      D.fn = D.prototype = {
+        init: function(selector){
+          this[0] = document.getElementById(selector);
+          this.length = 1;
+          console.log(this === D.fn, this === D.prototype, this);
+          
+          return this;
+        },
+        length: 2,
+        size: function(){
+          return this.length;
+        }
+      };
+
+      var cdemo = D('container');
+      console.log(cdemo);
+      // console.log(cdemo.size());
+
+      var c2 = D('span1');
+      console.log(cdemo);
+    </script>
+
+    <script type="text/javascript">
+      var E = function(selector){
+        return new E.fn.init(selector);
+      };
+      E.fn = E.prototype = {
+        constructor: E,
+        init: function(selector){
+          this[0] = document.getElementById(selector);
+          this.length = 1;
+          return this;
+        },
+        length: 2,
+        size: function(){
+          return this.length;
+        }
+      };
+      E.fn.init.prototype = E.fn;
+
+      var cdemo = E('container');
+      console.log(cdemo);
+      console.log(cdemo.size());
+
+      var c2 = E('span1');
+      console.log(cdemo);
+    </script>
+
+    <script type="text/javascript" src="27-myJQ.js"></script>
+    <script type="text/javascript">
+      
+
+      console.log($$('#container'));
+      console.log($('#container'));
+
+
+      var demo = $$.extend({first: 1}, {second: 2}, {third: 3});
+      console.log(demo);
+
+      $$.extend($$.fn, {version: '1.0'});
+      console.log($$('#container').version);
+      $$.fn.extend({getVersion: function(){
+        return this.version;
+      }});
+      console.log($$('#container').getVersion());
+
+
+      $$.extend($$, {author: '张荣民'});
+      console.log($$.author);
+
+      $$.extend({nickname: '雨夜'});
+      console.log($$.nickname);
+
+      $$('#container').on('mouseover', function(event){
+        console.log(event.clientX);
+      }).css('color', 'red').attr('class', 'mydiv').html('可以了？');
+
+      debugger;
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
