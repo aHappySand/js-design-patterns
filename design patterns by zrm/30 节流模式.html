@@ -6,6 +6,19 @@
     <title>节流模式</title>
     <script type="text/javascript" src="../jquery-3.3.1.js"></script>
     <script type="text/javascript" src="30-throttle.js"></script>
+    <script type="text/javascript" src="30-lazyLoadImg.js"></script>
+    <script type="text/javascript" src="30-logPack.js"></script>
+
+    <style type="text/css">
+        #back{
+            position: absolute;
+            right: 5px;
+        }
+        img{
+            height: 600px;
+            /*display: none;*/
+        }
+    </style>
   </head>
   <body>
     <span>2</span>
@@ -34,14 +47,60 @@
         </div>
         <input type="button" id="next-btn" value="下一个" name="">
       </div>
-    </div>
 
+      <div id="img-container">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/2.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/3.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/4.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/5.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/6.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/2.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/3.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/4.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/5.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/6.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/3.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/4.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/5.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/6.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/7.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+         <img src="image/loading_circle.gif" alt="" data-src="image/1.jpg">
+      </div>
+    </div>
+    <div id="back">返回顶部</div>
     <script type="text/javascript">
         function moveScroll(){
             var top = $(document).scrollTop();
             $('#back').animate({top: top + 300}, 400, 'easeOutCubic');
         }
 
+        new LazyLoad('img-container');
+
+        document.getElementById('next-btn').onclick = function(){
+            debugger;
+            LogPack({
+                btnId: this.id,
+                context: this.innerHTML,
+                type:'click'
+            });
+        };
     </script>
   </body>
 </html>

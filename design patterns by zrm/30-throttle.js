@@ -3,7 +3,7 @@ var Throttle = function(){
     var isClear = arguments[0], fn;
     //如果第一个参数的类型为Boolean类型，那么第一个参数表示是否清除计数器
     if(typeof isClear == 'boolean'){
-        //第二个参数则为函数；   为什么不直接写__throttleID？？
+        //第二个参数则为函数
         fn = arguments[1];
         isClear && fn.__throttleID && clearTimeout(fn.__throttleID);
     }else{//通过计时器延迟函数的执行
