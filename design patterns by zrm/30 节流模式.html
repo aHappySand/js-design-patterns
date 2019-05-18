@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>节流模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="30-throttle.js"></script>
+  </head>
+  <body>
+    <span>2</span>
+    <div>3</div>
+    <div>
+        节流模式（Throttler）：对重复的业务逻辑进行节流控制，执行最后一次操作并取消其他操作，以提高性能。
+    </div>
+    <div id="container">
+      <div>
+        <div>
+          <ul>
+            <li><span id="span1">1</span></li>
+            <li><span id="span2">2</span></li>
+            <li>3</li>
+            <li>4</li>
+          </ul>
+        </div>  
+      </div>
+      <div>
+        <input type="button" value="上一个" name="" id="pre-btn">
+        <div>
+          <ul>
+            <li><span id="span5"></span></li>
+            <li><span id="span6"></span></li>
+          </ul>
+        </div>
+        <input type="button" id="next-btn" value="下一个" name="">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+        function moveScroll(){
+            var top = $(document).scrollTop();
+            $('#back').animate({top: top + 300}, 400, 'easeOutCubic');
+        }
+
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
