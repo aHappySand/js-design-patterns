@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>简单模板模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <style type="text/css">
+        #back{
+            position: absolute;
+            right: 5px;
+        }
+        img{
+            height: 600px;
+            /*display: none;*/
+        }
+    </style>
+  </head>
+  <body>
+    <span>2</span>
+    <div>3</div>
+    <div>
+        简单模板模式（Simple Template）：通过格式化字符串拼接凑出视图避免创建视图时大量节点操作，优化内存开销。
+    </div>
+    <div id="container">
+      <div>
+        <div>
+          <ul>
+            <li><span id="span1">1</span></li>
+            <li><span id="span2">2</span></li>
+            <li>3</li>
+            <li>4</li>
+          </ul>
+        </div>  
+      </div>
+      <div>
+        <input type="button" value="上一个" name="" id="pre-btn">
+        <div>
+          <ul>
+            <li><span id="span5"></span></li>
+            <li><span id="span6"></span></li>
+          </ul>
+        </div>
+        <input type="button" id="next-btn" value="下一个" name="">
+      </div>
+
+    
+    </div>
+    <div id="back">返回顶部</div>
+ 
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
