@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>等待者模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="34-waiter.js"></script>
+    <style type="text/css">
+        #back{
+            position: absolute;
+            right: 5px;
+        }
+        img{
+            height: 600px;
+            /*display: none;*/
+        }
+    </style>
+  </head>
+  <body>
+    <span>2</span>
+    <div>3</div>
+    <div>
+      等待者模式（waiter）：通过对多个异步进程监听，来触发未来发生的动作。
+    </div>
+    <div id="container">
+      <button>这个</button>
+    </div>
+    <script type="text/javascript">
+      var waiter = new Waiter();
+      var first = function(){
+        var dtd1 = waiter.Deferred();
+        setTimeout(function(){
+          console.log('first egg');
+          dtd1.reject();
+        },5000);
+        return dtd1;
+      }();
+
+      var second = function(){
+        var dtd2 = waiter.Deferred();
+        setTimeout(function(){
+          console.log('second egg');
+          dtd2.resolve();
+        },10000);
+        return dtd2;
+      }();
+
+      waiter
+        //监听2个彩蛋
+        .when(first, second)
+        //添加函数成功
+        .done(function(){
+          console.log('success');
+        })
+        .fail(function(){
+          console.log('fail');
+        });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
