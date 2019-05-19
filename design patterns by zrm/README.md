@@ -29,3 +29,12 @@
     * [第24章 备忘录模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/24%20%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F.html)
     * [第25章 迭代器模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/25%20%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F.html)
     * [第26章 解释器模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/26%20%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F.html)
+* 第五篇：技巧型设计篇
+    * [第27章 链模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/27%20%E9%93%BE%E6%A8%A1%E5%BC%8F.html)
+    * [第28章 委托模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/28%20%E5%A7%94%E6%89%98%E6%A8%A1%E5%BC%8F.html)
+    * [第29章 数据访问对象模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/29%20%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%BC%8F.html)
+    * [第30章 节流模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/30%20%E8%8A%82%E6%B5%81%E6%A8%A1%E5%BC%8F.html)
+    * [第31章 简单模板模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/31%20%E7%AE%80%E5%8D%95%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F.html)
+    * [第32章 惰性模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/32%20%E6%83%B0%E6%80%A7%E6%A8%A1%E5%BC%8F.html)
+    * [第33章 参与者模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/33%20%E5%8F%82%E4%B8%8E%E8%80%85%E6%A8%A1%E5%BC%8F.html)
+    * [第34章 等待者模式](https://github.com/aHappySand/js-design-patterns/blob/master/design%20patterns%20by%20zrm/34%20%E7%AD%89%E5%BE%85%E8%80%85%E6%A8%A1%E5%BC%8F.html)
