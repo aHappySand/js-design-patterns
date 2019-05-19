@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>参与者模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <style type="text/css">
+        #back{
+            position: absolute;
+            right: 5px;
+        }
+        img{
+            height: 600px;
+            /*display: none;*/
+        }
+    </style>
+  </head>
+  <body>
+    <span>2</span>
+    <div>3</div>
+    <div>
+      参与者模式（participator）：在特定的作用域中执行给定的函数，并将参数原封不动地传递。
+    </div>
+    <div id="container">
+      <button>这个</button>
+    </div>
+    <script type="text/javascript">
+      var A = A || {};
+      A.on = function(dom, type, fn, data){
+        if(dom.addEventListener){
+          //重新定义on方法
+          A.on = function(dom,type, fn, data){
+            dom.addEventListener(type, function(e){
+              fn.call(dom, e, data);
+            }, false);
+          }
+        }else if(dom.attachEvent){
+          A.on = function(dom, type, fn, data){
+            dom.attachEvent('on'+type, function(e){
+              fn.call(dom, e, data);
+            }, false);
+          }
+        }else {
+          A.on = function(dom, type, fn, data){
+            dom['on' + type] = function(e){
+              fn.call(dom, e, data);
+            };
+          }
+        }
+        A.on(dom, type, fn, data);
+      };
+    </script>
+
+    <script type="text/javascript" title="函数绑定">
+      function bind2(fn, context){
+        return function(){
+          return fn.apply(context, arguments);
+        }
+      }
+
+      var demoObj = {
+        title: '这是一个例子'
+      };
+      function demoFn(){
+        console.log(this.title);
+      }
+      var bindFn = bind2(demoFn, demoObj);
+      demoFn();//undefined
+      bindFn();//这是一个例子
+    </script>
+
+    <script type="text/javascript" title="应用于事件">
+      var btn = document.getElementsByTagName('button')[0];
+      var span = document.getElementsByTagName('span')[0];
+
+      function demo2Fn(){
+        console.log(arguments, this);
+      }
+      var bind2Fn = bind2(demo2Fn);
+      btn.addEventListener('click', bind2Fn);
+      //[MouseEvent], [Window]
+
+      var bind3Fn = bind2(demo2Fn, span);
+      span.addEventListener('click', bind3Fn);
+      // [MouseEvent] <span>2</span>
+    </script>
+
+    <script type="text/javascript" src="33-curry.js"></script>
+    <script type="text/javascript">
+      function add(num1, num2){
+        return num1 + num2;
+      }
+      //加 5 加法器
+      function add5(num){
+        return 5 + num;
+      }
+
+      console.log(add5(7));//12
+
+      //函数柯里化处理
+      var add5 = curry(add, 5);//12
+      console.log(add5(7));
+
+      //--------------------------
+
+      var d1 = {text: '这是第一组数据'};
+      var d2 = {text: '这是第二组数据'};
+
+
+      var bind4Fn = bind(demo2Fn, btn, d1);
+      btn.addEventListener('click', bind4Fn);
+
+
+      //原始的bind
+      var bind5Fn = demo2Fn.bind(btn, d1);
+      btn.addEventListener('click', bind5Fn);
+      
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
