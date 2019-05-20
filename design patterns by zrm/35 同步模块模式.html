@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>同步模块模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="35-module.js"></script>
+    <style type="text/css">
+        #back{
+            position: absolute;
+            right: 5px;
+        }
+        img{
+            height: 600px;
+            /*display: none;*/
+        }
+    </style>
+  </head>
+  <body>
+    <span>2</span>
+    <div>
+      模块化：将复杂的系统分解成高内聚、低耦合的模块，使系统开发变得可控、可维护、可拓展，提高模块的复用率。
+    </div>
+    <div>
+      同步模块模式-SMD（Synchronous Module Definition）：请求发出后，无论模块是否存在，立即执行后续的逻辑，实现模块开发中对模块的立即引用。
+    </div>
+    <div>
+      局部变量不能使用parent，在IE中这个为关键字，表示window object
+    </div>
+    <div id="container">
+      <button>这个</{button>
+          </div>
+         
+    <script type="text/javascript">
+      console.log(F.dom('container').html());
+      F.dom('container').addClass('ke');
+
+      F.module(['dom', document], function(dom, doc){
+        dom('container').html('可以这样操作');
+        doc.body.style.background = 'green';
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
