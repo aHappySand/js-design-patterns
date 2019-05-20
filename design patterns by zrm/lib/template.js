@@ -66,16 +66,3 @@ F.module('lib/template', function(){
         };
     return _TplEngine;
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
