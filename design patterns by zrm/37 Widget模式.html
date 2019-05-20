@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>Widget模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="36-module.js"></script>
+    <style type="text/css">
+        #back{
+            position: absolute;
+            right: 5px;
+        }
+        img{
+            height: 600px;
+            /*display: none;*/
+        }
+    </style>
+  </head>
+  <body>
+    <div>
+      Widget模式：指借用Web Widget（Web Widget指的是一块可以在任意页面中执行的代码块）思想将页面分解成部件，针对部件开发，最终组合成完整的页面。      
+    </div>
+    <div>
+    </div>
+    <div id="container">
+      <button>这个</{button>
+          </div>
+    
+    <script type="text/javascript">
+      var data = {
+        tagCloud: [
+          {is_selected: true, title: '设计模式', text: '设计模式'},
+          {is_selected: false, title: 'HTML', text: 'HTML'},
+          {is_selected: null, title: 'CSS', text: 'CSS'},
+          {is_selected: '', title: 'javascript', text: 'javascript'}
+        ]
+      };
+      F.module(['lib/template', 'lib/dom'], function(template, dom){
+        debugger;
+        var str = template('demo_script', data);
+        dom.html('container', str);
+      });
+    </script>
+    <script type="text/template" id="demo_script">
+      <div id="tag_cloud">
+        {% for(var i = 0, len = tagCloud.length; i< len; i++){
+          var ctx = tagCloud[i]; %}
+          <a href="#" class="tag_item
+          {% if(ctx["is_selected"]){ %}
+            selected
+           {% } %}
+           " title="{%=ctx["title"]%}">{%=ctx["text"]%}</a>
+        {% } %}
+      </div>
+    </script>
+
+    <script type="text/javascript">
+                  var _left = '{%',//左分隔符
+                _right = '%}';//右分隔符
+      var str = document.getElementById('demo_script').innerHTML;
+      debugger;
+      str = String(str);
+                //转义标签内的<
+                str = str.replace(/&lt;/g, '<');
+                str = str.replace(/&gt;/g, '>');
+                //过滤回车符、制表符、回车符
+                str = str.replace(/[\r\t\n]/g, '');
+                str = str.replace(new RegExp(_left + '=(.*?)' + _right, 'g'), "',typeof($1) === 'undefined' ? '' : $1, '");
+                str = str.replace(new RegExp(_left, 'g'), "');");
+                str = str.replace(new RegExp(_right, 'g'), "template_array.push('");
+
+    </script>
+  </body>
+</html>
+
+
+
+
+
