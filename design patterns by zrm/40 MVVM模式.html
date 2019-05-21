@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>MVVM模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="36-module.js"></script>
+    <style type="text/css">
+      .ui-slider{
+        width: 98%;
+        border: 1px solid #ccc;
+        height: 18px;
+        position: relative;
+        margin: 5px;
+      }
+      .ui-slider div{
+        background: green;
+        height: 100%;
+        padding: 1px;
+        position: absolute;
+        top: -1px;
+        left: -1px;
+      }
+      .ui-slider span{
+        width: 14px;
+        height: 23px;
+        position: absolute;
+        background: #a7b2a7;
+        top: -3px;
+      }
+
+      .ui-slider em {
+        position: absolute;
+        top: -20px;
+      }
+
+      .ui-progressbar{
+        width: 98%;
+        border: 1px solid #ccc;
+        height: 18px;
+        position: relative;
+        margin: 5px;
+      }
+
+      .ui-progressbar div{
+        height: 100%;
+        background-color: #5bc0de;
+        -webkit-animation: animate-positive 2s;
+
+        animation: animate-positive 2s;
+        background-image: linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+        transition: width .6s ease;
+      }
+
+      @-webkit-keyframes animate-positive{
+        0% { width: 0; }
+      }
+      @keyframes animate-positive{
+        0% { width: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+        MVVM模式（模型Model-视图View-视图模型ViewModel）：为视图层量身定做一套视图模型，并在视图模式中创建属性和方法，为视图层绑定数据并实现交互。
+    </div>
+    <div>
+    </div>
+    <div id="container">
+        <div class="first" data-bind="type:'slider', data:demo1"></div>
+        <div class="second" data-bind="type:'slider', data:demo2">test</div>
+        <div class="third" data-bind="type:'progressbar', data:demo3"></div>
+    </div>
+
+  </body>
+      <script type="text/javascript" src="40-mvvm.js"></script>
+
+    <script type="text/javascript">
+      var demo1 = {
+        position: 60,
+        totle: 200
+      },
+      demo2 = {
+        position: 20
+      },
+      demo3= {
+        position: 50
+      };
+
+      VM();
+    </script>
+</html>
+
+
+
+
+
