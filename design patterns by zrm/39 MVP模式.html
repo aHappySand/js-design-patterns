@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <title>MVP模式</title>
+    <script type="text/javascript" src="../jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="36-module.js"></script>
+    <script type="text/javascript" src="39-mvp.js"></script>
+    <style type="text/css">
+        #back{
+            position: absolute;
+            right: 5px;
+        }
+        img{
+            height: 600px;
+            /*display: none;*/
+        }
+    </style>
+  </head>
+  <body>
+    <div>
+      MVP（模型Model-视图View-管理器Presenter）：视图层不直接引用Model层内的数据，而是通过Presenter层实现对Model层内的数据访问。即所有层次的交互都发生在Presenter中。
+    </div>
+    <div>
+    </div>
+    <div id="container">
+    
+    </div>
+
+
+    <script type="text/javascript">
+      MVP.init();
+    </script>
+  </body>
+</html>
+
+
+
+
+
